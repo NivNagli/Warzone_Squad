@@ -1,10 +1,10 @@
 import React from 'react';
 
-import './Header.css';
+import './MainHeader.css';
 
 const Header = props => {
   return (
-    <header className="header">
+    <header className="main_header">
       <h1>MERN Shop</h1>
     </header>
   );

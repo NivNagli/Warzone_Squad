@@ -1,4 +1,4 @@
-.header {
+.main_header {
   position: fixed;
   top: 0;
   left: 0;
@@ -10,7 +10,7 @@
   background: #0028ab;
 }
 
-.header h1 {
+.main_header h1 {
   margin: 0;
   color: white;
 }
