@@ -1,0 +1,25 @@
+.button {
+    margin-right: 20px;
+    background-color: #ff9f1c;
+    border: none;
+    font-family: "Poppins";
+    padding: 10px 0;
+    font-size: 15px;
+    border-radius: 10px;
+    min-width: 85px;
+    max-width: 90px;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+  }
+  
+  .button:focus {
+    outline: none;
+  }
+  
+  .button:hover{
+    transition: all 0.3s ease-in-out;
+    filter: opacity(0.8);
+    cursor: pointer;
+  }
+  

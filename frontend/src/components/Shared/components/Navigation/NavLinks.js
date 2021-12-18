@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import React from 'react';
 import classes from './NavLinks.module.css';
+import Button from '../Button/Button';
 
 const NavLinks = props => {
     const isLoggedIn = false;
@@ -24,14 +25,14 @@ const NavLinks = props => {
 
             <div className={classes.nav_buttons}>
                 {!isLoggedIn && (
-                    <button className={classes.button} >Login</button>
+                    <Button to={'/Login'} parentClass={classes.button}>Login</Button>
                 )}
 
                 {!isLoggedIn && (
-                    <button className={classes.button} >Signup</button>
+                    <Button to={'/Signup'} parentClass={classes.button}>Signup</Button>
                 )}
                 {isLoggedIn && (
-                    <button className={classes.button} >Logout</button>
+                    <Button to={'/Logout'} parentClass={classes.button}>Logout</Button>
                 )}
             </div>
             
