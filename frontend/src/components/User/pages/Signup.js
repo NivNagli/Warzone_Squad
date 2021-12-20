@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Input from '../../Shared/components/Input/Input';
 import Button from '../../Shared/components/Button/Button';
-import PlatformSelector from '../../Shared/components/Input/PlatformSelector';
-import classes from './Login.module.css';
+import classes from './Signup.module.css';
+import SearchUser from '../../Shared/components/Input/SearchUser';
+import OptionSelector from '../../Shared/components/Input/OptionSelector';
 import {
   VALIDATOR_REQUIRE,
   VALIDATOR_MINLENGTH,
@@ -12,7 +13,7 @@ import {
 } from '../../Shared/util/validators';
 import { useForm } from '../../Shared/hooks/form-hook';
 
-const LoginPage = () => {
+const Signup = () => {
   const [formState, inputHandler] = useForm(
     {
       email: {
@@ -35,13 +36,19 @@ const LoginPage = () => {
     false
   );
 
-  const placeSubmitHandler = async event => {
+  const [enteredPlatform, setEnteredPlatform] = useState('psn');
+
+  const placeSubmitHandler = async event => { // TODO: In the future we should send req here.
     event.preventDefault();
+    console.log(enteredPlatform); // We will need to send the chosen platform....
   };
 
-  const selectChanged = (val) => {
-    console.log(val.target.value);
+  const selectChanged = (val) => {// TODO: will need that to send the correct platform.
+    setEnteredPlatform(val.target.value);
   };
+  
+  const optionsValues = ["psn", "xbox", "battle"];
+  const optionsDescriptions = ["Playstation", "Xbox", "Battle.net"];
 
   return (
     <React.Fragment>
@@ -70,8 +77,9 @@ const LoginPage = () => {
           label="Password Verification"
           type="password"
           validators={[VALIDATOR_MINLENGTH(5)]}
-          errorText="Please enter a valid password (at least 5 characters)."
+          errorText="The password is not identical."
           onInput={inputHandler}
+          compareVal={formState.inputs.password.value}
         />
         <Input
           id="username"
@@ -79,16 +87,17 @@ const LoginPage = () => {
           label="Platform Username"
           type="text"
           validators={[VALIDATOR_REQUIRE()]}
-          errorText="Please enter a valid password (at least 5 characters)."
+          errorText="Please enter a valid username."
           onInput={inputHandler}
         />
-        <PlatformSelector center={true} selectChanged={selectChanged} />
+        <OptionSelector optionsValues={optionsValues} optionsDescriptions={optionsDescriptions} center={true} selectChanged={selectChanged}/>
         <Button type="submit" disabled={!formState.isValid}>
           Signup
         </Button>
       </form>
+      <SearchUser/>
     </React.Fragment>
   );
 };
 
-export default LoginPage;
+export default Signup;

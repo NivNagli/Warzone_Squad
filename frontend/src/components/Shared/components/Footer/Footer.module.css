@@ -3,9 +3,10 @@
   padding: 15px;
   background-color: #011627;
   color: #bababa;
-  position: absolute;
+  position: relative;
   bottom: 0;
   width: 100%;
+  margin-top: 0.5rem;
 }
 .footer p {
   float: left;

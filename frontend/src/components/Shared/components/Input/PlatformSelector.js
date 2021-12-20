@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react';
+import React from 'react';
 import classes from './PlatformSelector.module.css';
 const PlatformSelector = props => {
     const onChangeHandler = (event) => {
@@ -7,8 +7,7 @@ const PlatformSelector = props => {
 
     return (
         <React.Fragment>
-        <label className={classes.test} htmlFor="test">Platform</label>
-        <div className={props.center ? classes.platform_div : "" + " " + "test"}>
+        <div className={props.center ? classes.platform_div : ""}>
         <select className={classes.platform_select}  onChange={onChangeHandler}>
             <option value="psn">Playstation</option>
             <option value="xbox">Xbox</option>

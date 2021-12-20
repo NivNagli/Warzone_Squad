@@ -9,7 +9,8 @@ const inputReducer = (state, action) => {
       return {
         ...state,
         value: action.val,
-        isValid: validate(action.val, action.validators)
+        isValid: validate(action.val, action.validators,action.compareVal),
+        compareVal : action.compareVal
       };
     case 'TOUCH': {
       return {
@@ -26,7 +27,8 @@ const Input = props => {
   const [inputState, dispatch] = useReducer(inputReducer, {
     value: props.initialValue || '',
     isTouched: false,
-    isValid: props.initialValid || false
+    isValid: props.initialValid || false,
+    compareVal : props.initialCompareVal || null
   });
 
   const { id, onInput } = props;
@@ -40,7 +42,8 @@ const Input = props => {
     dispatch({
       type: 'CHANGE',
       val: event.target.value,
-      validators: props.validators
+      validators: props.validators,
+      compareVal : props.compareVal
     });
   };
 

@@ -31,11 +31,11 @@
 .platform_div {
   display: flex;
   justify-content: center;
-  margin-bottom: 1rem;
+  margin-top: 1.5rem;
 }
 
-.test{
+.platform_label{
   font-weight: bold;
-  margin-bottom: 0.5rem;
   color:white;
+  margin-right: 0.5rem;
 }
