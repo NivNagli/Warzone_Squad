@@ -1,9 +1,8 @@
-import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import React from 'react';
+
 
 import Input from '../../Shared/components/Input/Input';
 import Button from '../../Shared/components/Button/Button';
-import PlatformSelector from '../../Shared/components/Input/PlatformSelector';
 import classes from './Login.module.css';
 import {
   VALIDATOR_REQUIRE,
@@ -29,11 +28,13 @@ const LoginPage = () => {
 
   const placeSubmitHandler = async event => {
     event.preventDefault();
+    console.log("Will need to send http request here to the server and afterwards to re render the result with the History Hook");
+    console.log(`Input In Login Form => E-Mail = ${formState.inputs.email.value}, Password = ${formState.inputs.password.value}`);
   };
 
   return (
     <React.Fragment>
-      <form className={classes.place_form} onSubmit={placeSubmitHandler}>
+      <form className={classes.login_form} onSubmit={placeSubmitHandler}>
         <Input
           id="email"
           element="input"

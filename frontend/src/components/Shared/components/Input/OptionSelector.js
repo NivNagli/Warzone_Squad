@@ -16,8 +16,8 @@ const OptionSelector = props => {
     }
     return (
         <React.Fragment>
-            <div className={props.center ? classes.platform_div : ""}>
-                <select className={classes.platform_select} onChange={onChangeHandler}>
+            <div className={props.center ? classes.custom_div : ""}>
+                <select className={classes.custom_select} onChange={onChangeHandler}>
                     {options}
                 </select>
             </div>

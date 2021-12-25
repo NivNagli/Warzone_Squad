@@ -11,12 +11,12 @@ const NavLinks = props => {
             <div className={classes.nav_links}>
                 <ul className={classes.nav_list}>
                     <li>
-                        <NavLink className={classes.nav__link} to="/" exact>
+                        <NavLink className={classes.nav__link} to="/Compare-Search" exact>
                             Compare
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink className={classes.nav__link} to="/" exact>
+                        <NavLink className={classes.nav__link} to="/Player-Search" exact>
                             Search
                         </NavLink>
                     </li>

@@ -1,11 +1,15 @@
-.place_form {
+.login_form {
     position: relative;
     list-style: none;
     margin: 0 auto;
     padding: 1rem;
     width: 90%;
     max-width: 40rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+    font-weight: bold;
+    font-family: "Poppins";
     border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 255, 213, 0.411);
+    border-radius: 6px;
+    background-color: #031c31;
 }
   

@@ -1,10 +1,8 @@
-import React, { useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState } from 'react';
 
 import Input from '../../Shared/components/Input/Input';
 import Button from '../../Shared/components/Button/Button';
 import classes from './Signup.module.css';
-import SearchUser from '../../Shared/components/Input/SearchUser';
 import OptionSelector from '../../Shared/components/Input/OptionSelector';
 import {
   VALIDATOR_REQUIRE,
@@ -40,19 +38,19 @@ const Signup = () => {
 
   const placeSubmitHandler = async event => { // TODO: In the future we should send req here.
     event.preventDefault();
-    console.log(enteredPlatform); // We will need to send the chosen platform....
+    console.log(`FROM SignUp Submit : Entered inputs = ${formState.inputs.username.value} Entered Platform = ${enteredPlatform}`);
   };
 
   const selectChanged = (val) => {// TODO: will need that to send the correct platform.
     setEnteredPlatform(val.target.value);
   };
   
-  const optionsValues = ["psn", "xbox", "battle"];
+  const optionsValues = ["psn", "xbl", "battle"];
   const optionsDescriptions = ["Playstation", "Xbox", "Battle.net"];
 
   return (
     <React.Fragment>
-      <form className={classes.place_form} onSubmit={placeSubmitHandler}>
+      <form className={classes.signup_form} onSubmit={placeSubmitHandler}>
         <Input
           id="email"
           element="input"
@@ -95,7 +93,6 @@ const Signup = () => {
           Signup
         </Button>
       </form>
-      <SearchUser/>
     </React.Fragment>
   );
 };

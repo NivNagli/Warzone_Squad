@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import classes from './Button.module.css';
 
 const Button = props => {
+  // parentClass not necessarily the same class of the parent but the intention that it comes from the parent...
   if (props.to) {
     return (
       <Link
@@ -17,7 +18,7 @@ const Button = props => {
   }
   return (
     <button
-      className={classes.button}
+      className={classes.button + " " + props.parentClass}
       type={props.type}
       onClick={props.onClick}
       disabled={props.disabled}
