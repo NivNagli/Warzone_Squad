@@ -1,9 +1,9 @@
 exports.errorDescriptionBuilder = (errorCode, description, possibleCause) => {
     const errorDescription = {};
-    errorDescription["message"] = `Request failed with status code ${errorCode}`;
+    errorDescription["message"] = description;
     errorDescription["name"] = "Error";
-    errorDescription["description"] = description;
     errorDescription["possibleCause"] = possibleCause;
+    errorDescription["originalMessage"] = `Request failed with status code ${errorCode}`;
     return errorDescription;
 };
 

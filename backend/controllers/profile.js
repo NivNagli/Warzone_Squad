@@ -36,7 +36,7 @@ exports.getUser = async (req, res, next) => {
     try {
         const gameProfile = await WarzoneUser.findOne({ username: username, platform: platform });
         if (!gameProfile) {
-            description = "Last Games extract failed";
+            description = "Last Games extract failed";  // default message description in case we will not get one from our requests.
             possibleCause = "check the username & platform and the extract controller";
 
             /* Im making promise 'barrier' in order to run the 2 requests in parallel */
@@ -57,15 +57,19 @@ exports.getUser = async (req, res, next) => {
             });
             await newGameProfile.save();
             console.log("New game profile object created in the database");
-            res.status(200).json({ lastGamesStats: last100GamesStatsArray, generalStats: lifetimeAndWeeklyStats});
+            res.status(200).json({ lastGamesStats: last100GamesStatsArray, generalStats: lifetimeAndWeeklyStats, profileID : newGameProfile.id});
         }
         else {
-            res.status(200).json({ lastGamesStats: gameProfile.lastGamesStats, generalStats: gameProfile.generalStats });
+            res.status(200).json({ lastGamesStats: gameProfile.lastGamesStats, generalStats: gameProfile.generalStats, profileID : gameProfile.id});
         }
     }
     catch (err) {
+        try {
+            possibleCause = err.response.data.possibleCause;
+        }
+        catch (err) {} // Dont care if dont have a cause, we will use ours cause from this method.
         console.log("getUser controller method failed!");
-        console.log(err);
+        console.log(err.response.data.possibleCause);
         try {
             const errorCode = error.response.status;
             res.status(errorCode).json(controllersUtils.errorDescriptionBuilder(errorCode, description, possibleCause));

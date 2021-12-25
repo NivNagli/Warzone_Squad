@@ -77,7 +77,7 @@ describe('Extract Controller', function () {
       expect(res.statusCode).to.be.equal(200);
       done();
     });
-  }).timeout(5000);
+  }).timeout(10000);
 
   it('should return status 200 for "getLifetimeAndWeeklyStats" method', (done) => {
     const res = {
@@ -95,7 +95,7 @@ describe('Extract Controller', function () {
       expect(res.statusCode).to.be.equal(200);
       done();
     });
-  }).timeout(5000);
+  }).timeout(10000);
 
   it('should return status 200 for "getGameStatsById" method', (done) => {
     const res = {
@@ -113,7 +113,7 @@ describe('Extract Controller', function () {
       expect(res.statusCode).to.be.equal(200);
       done();
     });
-  }).timeout(5000);
+  }).timeout(10000);
   
   it('should return status 200 for "getLastGamesArrayByCycle" method', (done) => {
     const res = {
@@ -134,7 +134,7 @@ describe('Extract Controller', function () {
   }).timeout(25000);
 
   /*********** Requests that should not be successful due to incorrect information  ************/
-  it('should return status 422 for "getLastGamesArrayAndSummary" method', (done) => {
+  it('should return status 500 for "getLastGamesArrayAndSummary" method', (done) => {
     const res = {
       statusCode: 0,
       userStatus: null,
@@ -147,12 +147,12 @@ describe('Extract Controller', function () {
       }
     };
     extractController.getLastGamesArrayAndSummary(badPlayerReq, res, ()=>{}).then(() => {
-      expect(res.statusCode).to.be.equal(422);
+      expect(res.statusCode).to.be.equal(500);
       done();
     });
-  }).timeout(5000);
+  }).timeout(10000);
 
-  it('should return status 422 for "getLifetimeAndWeeklyStats" method', (done) => {
+  it('should return status 500 for "getLifetimeAndWeeklyStats" method', (done) => {
     const res = {
       statusCode: 0,
       userStatus: null,
@@ -165,12 +165,12 @@ describe('Extract Controller', function () {
       }
     };
     extractController.getLifetimeAndWeeklyStats(badPlayerReq, res, ()=>{}).then(() => {
-      expect(res.statusCode).to.be.equal(422);
+      expect(res.statusCode).to.be.equal(500);
       done();
     });
-  }).timeout(5000);
+  }).timeout(10000);
 
-  it('should return status 422 for "getGameStatsById" method', (done) => {
+  it('should return status 500 for "getGameStatsById" method', (done) => {
     const res = {
       statusCode: 0,
       userStatus: null,
@@ -183,8 +183,8 @@ describe('Extract Controller', function () {
       }
     };
     extractController.getGameStatsById(badGameIdReq, res, ()=>{}).then(() => {
-      expect(res.statusCode).to.be.equal(422);
+      expect(res.statusCode).to.be.equal(500);
       done();
     });
-  }).timeout(5000);
+  }).timeout(10000);
 });
