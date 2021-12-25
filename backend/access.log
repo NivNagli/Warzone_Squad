@@ -40,3 +40,7 @@
 ::ffff:127.0.0.1 - - [16/Dec/2021:00:24:05 +0000] "GET /pull/lastGamesData/psn/mini_niva HTTP/1.1" 422 147 "-" "axios/0.21.4"
 ::ffff:127.0.0.1 - - [16/Dec/2021:00:24:05 +0000] "GET /extract/generalStats/psn/mini_niva HTTP/1.1" 422 242 "-" "axios/0.21.4"
 ::ffff:127.0.0.1 - - [16/Dec/2021:00:24:05 +0000] "GET /extract/lastGamesStats/psn/mini_niva/5 HTTP/1.1" 422 236 "-" "axios/0.21.4"
+::ffff:127.0.0.1 - - [25/Dec/2021:12:16:02 +0000] "GET /pull/lifetimeData/psn/mini_niv HTTP/1.1" 200 21645 "-" "axios/0.21.4"
+::ffff:127.0.0.1 - - [25/Dec/2021:12:16:02 +0000] "GET /extract/generalStats/psn/mini_niv HTTP/1.1" 200 1688 "-" "axios/0.21.4"
+::ffff:127.0.0.1 - - [25/Dec/2021:12:16:03 +0000] "GET /pull/lastGamesData/psn/mini_niv HTTP/1.1" 200 140027 "-" "axios/0.21.4"
+::ffff:127.0.0.1 - - [25/Dec/2021:12:16:03 +0000] "GET /extract/lastGamesStats/psn/mini_niv HTTP/1.1" 200 5652 "-" "axios/0.21.4"

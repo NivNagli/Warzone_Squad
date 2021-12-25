@@ -53,9 +53,11 @@ const LoginPage = () => {
           errorText="Please enter a valid password (at least 5 characters)."
           onInput={inputHandler}
         />
-        <Button type="submit" disabled={!formState.isValid}>
-          Login
-        </Button>
+        <div className={classes.div4button}>
+          <Button type="submit" disabled={!formState.isValid} parentClass={classes.login_button}>
+            Login
+          </Button>
+        </div>
       </form>
     </React.Fragment>
   );

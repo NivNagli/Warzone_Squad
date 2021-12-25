@@ -44,7 +44,7 @@ const Signup = () => {
   const selectChanged = (val) => {// TODO: will need that to send the correct platform.
     setEnteredPlatform(val.target.value);
   };
-  
+
   const optionsValues = ["psn", "xbl", "battle"];
   const optionsDescriptions = ["Playstation", "Xbox", "Battle.net"];
 
@@ -88,10 +88,12 @@ const Signup = () => {
           errorText="Please enter a valid username."
           onInput={inputHandler}
         />
-        <OptionSelector optionsValues={optionsValues} optionsDescriptions={optionsDescriptions} center={true} selectChanged={selectChanged}/>
-        <Button type="submit" disabled={!formState.isValid}>
-          Signup
-        </Button>
+        <OptionSelector optionsValues={optionsValues} optionsDescriptions={optionsDescriptions} center={true} selectChanged={selectChanged} />
+        <div className={classes.div4button}>
+          <Button type="submit" disabled={!formState.isValid} parentClass={classes.signup_button}>
+            Signup
+          </Button>
+        </div>
       </form>
     </React.Fragment>
   );

@@ -11,5 +11,16 @@
     box-shadow: 0 2px 8px rgba(0, 255, 213, 0.411);
     border-radius: 6px;
     background-color: #031c31;
+    text-align: center;
 }
-  
+
+.div4button{
+    display : flex;
+    justify-content: center;
+    margin-top:1rem;
+}
+.signup_button {
+    width:50%;
+    max-width: 90% !important;
+    margin-top: 1rem;
+}
