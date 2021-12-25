@@ -21,7 +21,6 @@
     color:rgb(32, 255, 2);
     font-weight: bold;
     text-align: center;
-    border-radius: 6px;
     box-shadow: 0 2px 8px rgba(0, 255, 106, 0.411);
     border-radius: 6px;
     background-color: #001f3f;
@@ -38,4 +37,10 @@
 .compare_button {
     width:50%;
     max-width: 90% !important;
+}
+
+.players_select_div {
+    box-shadow: 0 2px 4px rgba(0, 255, 106, 0.562);
+    border-radius: 6px;
+    padding-bottom: 1rem;
 }

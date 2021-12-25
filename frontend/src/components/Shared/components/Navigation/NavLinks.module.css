@@ -7,6 +7,13 @@
   margin-right: 1.2rem;
 }
 
+.nav_links a:hover,
+.nav_links a:active,
+.nav_links a.active {
+  border-color: #292929;
+  color: #00ffff;
+}
+
 .nav_list {
   list-style: none;
   display: flex;

@@ -48,15 +48,15 @@ const CompareSearch = () => {
 
     /* Setting form validation state and also make a function inside useEffect for update the state condition */
     const [formIsValid, setFormIsValid] = useState(false);
-    useEffect(() =>{
-        if(enteredNumberOfPlayers === 2 || enteredNumberOfPlayers === '2') {
+    useEffect(() => {
+        if (enteredNumberOfPlayers === 2 || enteredNumberOfPlayers === '2') {
             setFormIsValid(enteredUsernameUser1 && enteredUsernameUser2);
         }
-        else if(enteredNumberOfPlayers === 3 || enteredNumberOfPlayers === '3') {
+        else if (enteredNumberOfPlayers === 3 || enteredNumberOfPlayers === '3') {
             setFormIsValid(enteredUsernameUser1 && enteredUsernameUser2 && enteredUsernameUser3);
         }
 
-        else if(enteredNumberOfPlayers === 4 || enteredNumberOfPlayers === '4') {
+        else if (enteredNumberOfPlayers === 4 || enteredNumberOfPlayers === '4') {
             setFormIsValid(enteredUsernameUser1 && enteredUsernameUser2 && enteredUsernameUser3 && enteredUsernameUser4);
         }
         else {
@@ -75,15 +75,17 @@ const CompareSearch = () => {
 
     const playersDataArray = [
         <SearchUser updateSearchFields={onChangeSearchFieldsUser1} key="User1FromCompare" />,
-        <SearchUser updateSearchFields={onChangeSearchFieldsUser2} key="User2FromCompare"/>,
-        <SearchUser updateSearchFields={onChangeSearchFieldsUser3} key="User3FromCompare"/>,
-        <SearchUser updateSearchFields={onChangeSearchFieldsUser4} key="User4FromCompare"/>
+        <SearchUser updateSearchFields={onChangeSearchFieldsUser2} key="User2FromCompare" />,
+        <SearchUser updateSearchFields={onChangeSearchFieldsUser3} key="User3FromCompare" />,
+        <SearchUser updateSearchFields={onChangeSearchFieldsUser4} key="User4FromCompare" />
     ]
     return (
         <React.Fragment>
             <form className={classes.compare_form} onSubmit={placeSubmitHandler}>
-                <h3 className={classes.compare_header}>Select Number Of Players</h3>
-                <OptionSelector optionsValues={optionsValues} optionsDescriptions={optionsDescriptions} center={true} selectChanged={selectChanged} />
+                <div className={classes.players_select_div}>
+                    <h3 className={classes.compare_header}>Select Number Of Players</h3>
+                    <OptionSelector optionsValues={optionsValues} optionsDescriptions={optionsDescriptions} center={true} selectChanged={selectChanged} />
+                </div>
                 {playersDataArray.slice(0, enteredNumberOfPlayers)}
                 <div className={classes.div4button}>
                     <Button type="submit" disabled={!formIsValid} parentClass={classes.compare_button}>
