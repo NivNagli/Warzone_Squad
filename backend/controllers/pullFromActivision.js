@@ -95,6 +95,10 @@ exports.getPlayerLifetimeData = (req, res, next) => {
             res.status(200).json({ data: response.data });
         })
         .catch((error) => {
+
+            if(!error) {
+                next(new Error("UndefinedError"));
+            }
             if (!error.statusCode) {
                 error.statusCode = 500;
             }

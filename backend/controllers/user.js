@@ -11,9 +11,8 @@ exports.signup = async (req, res, next) => {
     /* First we will check if we received errors from the route with the help of express-validator third party package */
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return next(
-            new HttpError('Invalid inputs passed, please check your data.', 422)
-        );
+        const error = new HttpError('Invalid inputs passed, please check your data.', 422);
+        return next(error);
     }
     req.body.username = req.body.username.toLowerCase();
     const { email, password, username, platform } = req.body;
@@ -92,20 +91,20 @@ exports.signup = async (req, res, next) => {
             console.log("New user in the site just created and saved in the database.");
             res
                 .status(201)
-                .json({ userId: createdUser.id, email: createdUser.email, token: token });
+                .json({ userId: createdUser.id, gameProfileId: newGameProfileID, token: token });
             return;
         }
         catch (err) {
             console.log(err);
             let description = 'Signing up failed, please make sure that the username and platform are belongs to a public profile at activision website.';
-            if (newGameProfileID) {
+            if (newGameProfileID) {  // The case we succeed to create a new game profile but fail to save him / create the jwt token.
                 description = 'Signing up failed, please try again later.';
             }
             const error = new HttpError(description, 500);
             return next(error);
         }
     }
-
+    /* The case we already have a game profile with the information that we received from the user */
     else {
         try {
             const createdUser = new User({
@@ -124,7 +123,7 @@ exports.signup = async (req, res, next) => {
             console.log("New user in the site just created and saved in the database.");
             res
                 .status(201)
-                .json({ userId: createdUser.id, email: createdUser.email, token: token });
+                .json({ userId: createdUser.id, gameProfileId: existingProfile.id, token: token });
             return;
 
         }
@@ -138,8 +137,6 @@ exports.signup = async (req, res, next) => {
         }
 
     }
-
-
 
 };
 
@@ -158,4 +155,59 @@ const createAndSaveNewGameProfile = async (username, platform) => {
     let createProfileResult;
     createProfileResult = await axios(configForCreateUser);
     return createProfileResult.data.profileID;
+};
+
+exports.login = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const error = new HttpError('Invalid inputs passed, please check your data.', 422);
+        return next(error);
+    };
+
+    const { email, password } = req.body;
+    let existingUser;
+
+    try {
+        existingUser = await User.findOne({ email: email });
+    }
+    catch (err) {
+        const error = new HttpError("Logging in failed, please try again later.", 500);
+        return next(error);
+    }
+
+    if (!existingUser) {
+        const error = new HttpError("Invalid credentials, could not log you in.", 403);
+        return next(error);
+    }
+
+    let passwordIsValid = false;
+    try {
+        passwordIsValid = await bcrypt.compare(password, existingUser.password);
+    }
+    catch (err) {
+        const error = new HttpError("Logging in failed, please check your credentials and try again.");
+        return next(error);
+    }
+
+    if (!passwordIsValid) {
+        const error = new HttpError("Invalid credentials, could not log you in.", 403);
+        return next(error);
+    }
+
+    let token;
+    try {
+        token = jwt.sign(
+            { userId: existingUser.id, email: existingUser.email },
+            process.env.JWT_SECRET,
+            { expiresIn: '2h' }
+        );
+    }
+    catch (err) {
+        const error = new HttpError("Logging in failed, please try again later.", 500);
+        return next(error);
+    }
+    console.log("Login succeed!");
+    res
+    .status(200)
+    .json({ userId: existingUser.id, gameProfileId: existingUser.gameProfile, token: token });
 };

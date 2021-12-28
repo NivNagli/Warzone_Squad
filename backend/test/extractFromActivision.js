@@ -3,8 +3,6 @@ const chai = require('chai');
 const sinon = require('sinon');
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
-const app = require('../app');
-var request = require('supertest')
 
 const extractController = require('../controllers/extractFromActivision');
 
