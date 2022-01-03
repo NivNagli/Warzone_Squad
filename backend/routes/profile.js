@@ -12,6 +12,7 @@ const router = express.Router();
 
 const profileController = require('../controllers/profile');
 
-router.get('/username/:username/platform/:platform', profileController.getUser);
+router.get('/username/:username/platform/:platform', profileController.getGameProfile);
+router.get('/get-profile-by-id', profileController.getGameProfileById);
 
 module.exports = router;

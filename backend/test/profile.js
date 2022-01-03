@@ -38,7 +38,7 @@ describe('Match Controller', function () {
                 res.data = data.data;
             }
         };
-        profileController.getUser(goodPlayerReq, res, () => { }).then(() => {
+        profileController.getGameProfile(goodPlayerReq, res, () => { }).then(() => {
             expect(res.statusCode).to.be.equal(200);
             done();
         });
@@ -57,7 +57,7 @@ describe('Match Controller', function () {
                 this.lastGamesStats = data.data;
             }
         };
-        profileController.getUser(badPlayerReq, res, () => { }).then(() => {
+        profileController.getGameProfile(badPlayerReq, res, () => { }).then(() => {
             expect(res.statusCode).to.be.equal(500);
             done();
         });

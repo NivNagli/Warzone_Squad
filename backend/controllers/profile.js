@@ -1,15 +1,16 @@
 const axios = require('axios');
 const WarzoneUser = require('../models/warzoneUser');
 const controllersUtils = require('./controllersUtils');
+const HttpError = require('../models/http-error');
 
-exports.getUser = async (req, res, next) => {
+exports.getGameProfile = async (req, res, next) => {
     const platform = req.params.platform;
     let username;
     if (platform === 'battle') {
-        username = controllersUtils.fixBattleName(req.params.username);
+        username = controllersUtils.fixBattleName(req.params.username).toLowerCase();;
     }
     else {
-        username = req.params.username;
+        username = req.params.username.toLowerCase();;
     }
 
     /* I have written down a description & possibleCause that will help us get around problems 
@@ -79,4 +80,28 @@ exports.getUser = async (req, res, next) => {
             res.status(500).json(controllersUtils.errorDescriptionBuilder(500, description, possibleCause));
         }
     }
+};
+
+exports.getGameProfileById = async (req, res, next) => {
+    /* This method will get a profile id as he appear in the database and will return for that profile if it exists */
+    const {profileId} = req.body;
+    if(!profileId) {
+        const error = new HttpError('Invalid inputs passed, please check your data.', 422);
+        return next(error);
+    };
+
+    let existingProfile;
+    try {
+        existingProfile = await  WarzoneUser.findById(profileId);
+    }
+    catch (err) {
+        console.log(err);
+        const error = new HttpError("Profile search failed, Please try again.", 500);
+        return next(error);
+    }
+    if(!existingProfile) {
+        const error = new HttpError("Invalid profile ID", 403);
+        return next(error);
+    }
+    res.status(200).json({ lastGamesStats: existingProfile.lastGamesStats, generalStats: existingProfile.generalStats, profileID : existingProfile.id});
 };

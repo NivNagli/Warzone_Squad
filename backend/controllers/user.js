@@ -26,7 +26,7 @@ exports.signup = async (req, res, next) => {
     catch (err) {
         console.log(err);
         const error = new HttpError(
-            'Signing up failed, please try again later1.',
+            'Signing up failed, please try again later.',
             500
         );
         return next(error);
@@ -88,7 +88,7 @@ exports.signup = async (req, res, next) => {
                 process.env.JWT_SECRET,
                 { expiresIn: '2h' }
             );
-            console.log("New user in the site just created and saved in the database.");
+            console.log("New user just created in the site, and saved in the database.");
             res
                 .status(201)
                 .json({ userId: createdUser.id, gameProfileId: newGameProfileID, token: token });
