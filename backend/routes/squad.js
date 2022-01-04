@@ -4,7 +4,7 @@ const router = express.Router();
 const squadController = require('../controllers/squad');
 
 router.get(
-    '/test',
+    '/create-squad',
 
     [
         check('usernames')
@@ -17,6 +17,22 @@ router.get(
     ],
 
     squadController.getSquad
+);
+
+router.get(
+    '/compare',
+
+    [
+        check('usernames')
+        .not()
+        .isEmpty(),
+
+        check('platforms')
+        .not()
+        .isEmpty()
+    ],
+
+    squadController.comparePlayers
 );
 
 module.exports = router;

@@ -39,6 +39,7 @@ const getSharedGamesStats = (playersLastGamesStats) => {
                 }
             });
         });
+        squadGeneralStatsFromSharedGame.avgScorePerMinute = squadGeneralStatsFromSharedGame.avgScorePerMinute / playersLastGamesStats.length;
         result.squadSharedGamesStats.push(squadGeneralStatsFromSharedGame);
     });
     return result;
@@ -83,9 +84,9 @@ const initSquadGeneralStatsFromSharedGame = (gameId) => {
 };
 
 const updateGeneralSharedSquadStats = (squadGeneralStatsFromSharedGame, sharedGame) => {
-    squadGeneralStatsFromSharedGame.placement = sharedGame.placement;
+    squadGeneralStatsFromSharedGame.placement = sharedGame.teamPlacement;
     squadGeneralStatsFromSharedGame.mode = sharedGame.mode;
-    squadGeneralStatsFromSharedGame.date = sharedGame.date;
+    squadGeneralStatsFromSharedGame.date = sharedGame.gameDate;
 };
 
 const updateSharedStatsByGame = (squadGeneralStatsFromSharedGame, playerSharedGamesStats, sharedGame) => {

@@ -1,7 +1,7 @@
-exports.updateUserStats = (user, last20GamesStats) => {
-    const possibleNewGamesArray = updateGamesArray(user, last20GamesStats);
+exports.updateUserStats = (user, userLastGamesStats) => {
+    const possibleNewGamesArray = updateGamesArray(user, userLastGamesStats);
     console.log("Trying to update with new games.");
-    if (!possibleNewGamesArray) {  // the case we dont need to update maybe we can avoid him before ?
+    if (!possibleNewGamesArray) {  
         console.log("Should not update");
         return;
     }
@@ -14,14 +14,14 @@ exports.updateUserStats = (user, last20GamesStats) => {
 };
 
 
-// last20Games need to be "gamesArray" from the axios request.
-const updateGamesArray = (user, last20GamesStats) => {
+// userLastGamesStats need to be "gamesArray" from the axios request.
+const updateGamesArray = (user, userLastGamesStats) => {
     const lastGameFromLast20SavedArray = user.lastGamesStats[0];
     lastSavedGameDateInUtc = new Date(lastGameFromLast20SavedArray.gameDate).getTime();
-    if (new Date(last20GamesStats.gamesArray[0].gameDate).getTime() === lastSavedGameDateInUtc) {
+    if (new Date(userLastGamesStats.gamesArray[0].gameDate).getTime() === lastSavedGameDateInUtc) {
         return null;
     }
-    const newGamesArray = findNewGames(lastSavedGameDateInUtc, last20GamesStats.gamesArray);
+    const newGamesArray = findNewGames(lastSavedGameDateInUtc, userLastGamesStats.gamesArray);
     return newGamesArray;
 };
 

@@ -17,6 +17,11 @@ exports.getSquad = async (req, res, next) => {
     }
 
     const { usernames, platforms } = req.body;
+    if(usernames.length != platforms.length) {
+        const error = new HttpError('Invalid inputs passed, please check your data.', 422);
+        return next(error);
+    }
+
     let playersFound = false;  // Boolean flag indicator that will indicate if we found the players or not, in order to acknowledge the error.
     try {
         /* In the next 3 lines we will create requests for retrieving the players profiles, 
@@ -54,7 +59,7 @@ exports.getSquad = async (req, res, next) => {
                 lastTimeUpdated : new Date().getTime()
             });
             await newSquad.save();
-            res.status(200).json(
+            res.status(201).json(
                 {
                     squadID : newSquad.id, playersSharedGamesStats : sharedGamesStats.playersSharedGamesStats,
                     sharedGamesGeneralStats : sharedGamesStats.squadSharedGamesStats, allTimePlayersStats : allTimeGamesStats
@@ -133,6 +138,11 @@ exports.comparePlayers = async (req, res, next) => {
     }
 
     const { usernames, platforms } = req.body;
+    if(usernames.length != platforms.length) {
+        const error = new HttpError('Invalid inputs passed, please check your data.', 422);
+        return next(error);
+    }
+    
     let playersFound = false;  // Boolean flag indicator that will indicate if we found the players or not, in order to acknowledge the error.
     try {
         /* In the next 3 lines we will create requests for retrieving the players profiles, 

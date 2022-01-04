@@ -34,11 +34,11 @@ const userSchema = new Schema({
 
 userSchema.methods.updateStats = async function() {
     try {
-        updatedStats = await this.getUpdatedStats();
-        if(!updatedStats) return null;
-        this.lastGamesStats = updatedStats.lastGamesStats
-        this.generalStats = updatedStats.generalStats;
-        return this.save();
+        updatedStats = await this.getUpdatedStats(); // Execute the protocol that try to update the stats.
+        if(!updatedStats) return null; // The case we dont need to update the stats.
+        this.lastGamesStats = updatedStats.lastGamesStats // The case we find new stats
+        this.generalStats = updatedStats.generalStats; // ^^
+        return this.save();  // Return promise which will try to update the new warzone profile in the database with the new stats.
     }
 
     catch(err) {
@@ -50,16 +50,16 @@ userSchema.methods.updateStats = async function() {
 
 userSchema.methods.getUpdatedStats = async function() {
     try {
-        const configs = this.buildConfigs(this.username, this.platform);
+        const configs = this.buildConfigs(this.username, this.platform); // Create request configs for last-games and general stats requests
         const playerDataRequestBarrier = [];
         playerDataRequestBarrier.push(axios(configs[0]));
         playerDataRequestBarrier.push(axios(configs[1]));
-        const playerStats = await Promise.all(playerDataRequestBarrier);
-        const updatedLastGamesArrayStats = warzoneUserUtils.updateUserStats(this, playerStats[0].data.data);
-        if(!updatedLastGamesArrayStats) {
+        const playerStats = await Promise.all(playerDataRequestBarrier); // Run the request in parallel.
+        const updatedLastGamesArrayStats = warzoneUserUtils.updateUserStats(this, playerStats[0].data.data);  // Try to create the new update stats
+        if(!updatedLastGamesArrayStats) {  // The case the player didn't play a new game since the last update.
             return;
         }
-        return {
+        return {  // The case the player did player at least one new game since the last update.
             "lastGamesStats" : updatedLastGamesArrayStats,
             "generalStats" : playerStats[1].data.data
         };
