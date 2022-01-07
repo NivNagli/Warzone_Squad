@@ -50,7 +50,10 @@ exports.getLastGamesArrayAndSummary = async (req, res, next) => {
 
     catch (error) {
         console.log("Player Last Games Array Extract Failed!");
-        const errorCode = error.response.status;
+        let errorCode = 500;
+        if(error.response) {
+            errorCode = error.response.status;
+        }
         const description = "Last Games Array Extract 'get' Request Failed";
         const possibleCause = "Invalid username / platform || private account ||  Possible malfunction in the pull service";
         res.status(errorCode).json(errorDescriptionBuilder(errorCode, description, possibleCause));
@@ -77,7 +80,10 @@ exports.getLifetimeAndWeeklyStats = async (req, res, next) => {
 
     catch (error) {
         console.log("Player Lifetime & Weekly Stats Extract Failed!");
-        const errorCode = error.response.status;
+        let errorCode = 500;
+        if(error.response) {
+            errorCode = error.response.status;
+        }
         const description = "Lifetime & Weekly Stats Extract 'get' Request Failed";
         const possibleCause = "Invalid username / platform || private account || Possible malfunction in the pull service";
         if (error.response) {
@@ -117,7 +123,10 @@ exports.getGameStatsById = async (req, res, next) => {
 
     catch (error) {
         console.log("Players Array From Specific Game Extract by ID Failed!");
-        const errorCode = error.response.status;
+        let errorCode = 500;
+        if(error.response) {
+            errorCode = error.response.status;
+        }
         const description = "Players Array From Specific Game Extract by ID 'get' Request Failed";
         const possibleCause = "Invalid gameID || Possible malfunction in the pull service";
         res.status(errorCode).json(errorDescriptionBuilder(errorCode, description, possibleCause));
@@ -183,7 +192,10 @@ exports.getLastGamesArrayByCycle = async (req, res, next) => {
 
             catch (error) {
                 console.log("Player Last Games Array Extract Failed! at 'getLastGamesArrayByCycle'.");
-                const errorCode = error.response.status;
+                let errorCode = 500;
+                if(error.response) {
+                    errorCode = error.response.status;
+                }
                 const description = "Last Games Array Extract 'get' Request Failed";
                 const possibleCause = "Invalid username / platform || private account ||  Possible malfunction in the pull service";
                 res.status(errorCode).json(errorDescriptionBuilder(errorCode, description, possibleCause));
@@ -213,7 +225,10 @@ exports.getLastGamesArrayByCycle = async (req, res, next) => {
 
             catch (error) {
                 console.log("Player Last Games Array Extract Failed! at 'getLastGamesArrayByCycle'.");
-                const errorCode = error.response.status;
+                let errorCode = 500;
+                if(error.response) {
+                    errorCode = error.response.status;
+                }
                 const description = "Last Games Array Extract 'get' Request Failed";
                 const possibleCause = "Invalid username / platform || private account ||  Possible malfunction in the pull service";
                 res.status(errorCode).json(errorDescriptionBuilder(errorCode, description, possibleCause));

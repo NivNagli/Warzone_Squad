@@ -38,6 +38,10 @@ const getSharedGamesStats = (playersLastGamesStats) => {
                     updateSharedStatsByGame(squadGeneralStatsFromSharedGame, playerSharedGamesStats, game);
                 }
             });
+            if(playerSharedGamesStats.deaths != 0) {
+                playerSharedGamesStats.kdRatio = playerSharedGamesStats.kills / playerSharedGamesStats.deaths;
+                playerSharedGamesStats.kdRatio = playerSharedGamesStats.kdRatio.toFixed(2);
+            }
         });
         squadGeneralStatsFromSharedGame.avgScorePerMinute = squadGeneralStatsFromSharedGame.avgScorePerMinute / playersLastGamesStats.length;
         result.squadSharedGamesStats.push(squadGeneralStatsFromSharedGame);

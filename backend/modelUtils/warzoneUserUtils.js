@@ -16,8 +16,8 @@ exports.updateUserStats = (user, userLastGamesStats) => {
 
 // userLastGamesStats need to be "gamesArray" from the axios request.
 const updateGamesArray = (user, userLastGamesStats) => {
-    const lastGameFromLast20SavedArray = user.lastGamesStats[0];
-    lastSavedGameDateInUtc = new Date(lastGameFromLast20SavedArray.gameDate).getTime();
+    const lastGameFromLastGamesSavedArray = user.lastGamesStats[0];
+    lastSavedGameDateInUtc = new Date(lastGameFromLastGamesSavedArray.gameDate).getTime();
     if (new Date(userLastGamesStats.gamesArray[0].gameDate).getTime() === lastSavedGameDateInUtc) {
         return null;
     }

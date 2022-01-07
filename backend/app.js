@@ -46,10 +46,16 @@ app.use('/profile', profileRoutes);
 app.use('/user', userRoutes);
 app.use('/squad', squadRoutes);
 
-/* Setting the interval and function inside him that update the warzone profiles inside the database */
+/* Setting the interval and function inside him that try to update the warzone profiles inside the database */
 cron.schedule('*/15 * * * *', () => {
-  console.log(`Another warzone profiles update interval execute on: ${new Date()}`);
+  console.log(`Warzone profiles update interval execute on: ${new Date()}`);
   updateExecuter.updateUsersData();
+});
+
+/* Setting the interval and function inside him that update the warzone squads inside the database */
+cron.schedule('*/17 * * * *', () => {
+  console.log(`Warzone squads update interval execute on: ${new Date()}`);
+  updateExecuter.updateSquadsData();
 });
 
 /* Super 'Catcher' for errors handling */

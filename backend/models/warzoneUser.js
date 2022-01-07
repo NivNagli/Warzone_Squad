@@ -34,10 +34,24 @@ const userSchema = new Schema({
 
 userSchema.methods.updateStats = async function() {
     try {
-        updatedStats = await this.getUpdatedStats(); // Execute the protocol that try to update the stats.
+        const updatedStats = await this.getUpdatedStats(); // Execute the protocol that try to update the stats.
         if(!updatedStats) return null; // The case we dont need to update the stats.
         this.lastGamesStats = updatedStats.lastGamesStats // The case we find new stats
         this.generalStats = updatedStats.generalStats; // ^^
+        return this.save();  // Return promise which will try to update the new warzone profile in the database with the new stats.
+    }
+
+    catch(err) {
+        console.log(`Failed to update the stats for the user ${this.username} in ${this.platform} platform in 'updateStats' method.`);
+        console.log("Trying for second time to update that squad: ");
+    }
+    /* Second try in case of inner failure */
+    try {
+        const updatedStats = await this.getUpdatedStats(); // Execute the protocol that try to update the stats.
+        if(!updatedStats) return null; // The case we dont need to update the stats.
+        this.lastGamesStats = updatedStats.lastGamesStats // The case we find new stats
+        this.generalStats = updatedStats.generalStats; // ^^
+        console.log("Second attempt to update succeeded.")
         return this.save();  // Return promise which will try to update the new warzone profile in the database with the new stats.
     }
 

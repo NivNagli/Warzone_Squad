@@ -17,7 +17,7 @@ exports.getSquad = async (req, res, next) => {
     }
 
     const { usernames, platforms } = req.body;
-    if(usernames.length != platforms.length) {
+    if (usernames.length != platforms.length) {
         const error = new HttpError('Invalid inputs passed, please check your data.', 422);
         return next(error);
     }
@@ -33,44 +33,46 @@ exports.getSquad = async (req, res, next) => {
         /* After we successfully extract the players profiles we will sort them according the profiles id's because i defined the 'Squad'
          * object ID in the database according to the profiles ID's when they are sorted and chained into single string which is the Squad ID.
          * I did that to prevent duplicate squads in the database which contain the same players.
-         */ 
+         */
         const sortedPlayersIds = playersProfiles.map(profile => profile.profileID);
         playersFound = true;
         sortedPlayersIds.sort();
         // Check for existing squad.
-        let existingSquad = await Squad.findById(sortedPlayersIds.join(''));  
+        let existingSquad = await Squad.findById(sortedPlayersIds.join(''));
         // if the squad exists or not we need the updated all time stats.
-        const allTimeGamesStats = squadUtils.getPlayersLifetimeStats(playersProfiles);  
+        const allTimeGamesStats = squadUtils.getPlayersLifetimeStats(playersProfiles);
         if (existingSquad) {
             // In case we already have identical squad in the database we will not create him again...
             res.status(200).json(
                 {
-                    squadID : existingSquad.id, playersSharedGamesStats : existingSquad.playersSharedGamesStats,
-                    sharedGamesGeneralStats : existingSquad.sharedGamesGeneralStats, allTimePlayersStats : allTimeGamesStats
+                    squadID: existingSquad.id, playersSharedGamesStats: existingSquad.playersSharedGamesStats,
+                    sharedGamesGeneralStats: existingSquad.sharedGamesGeneralStats, allTimePlayersStats: allTimeGamesStats
                 });
         }
         else {
             // The case we dont have this squad in the database,
             // First i will create the squad shared games stats with the help of the 'squadUtils' module and after that we will create the new squad.
             const sharedGamesStats = squadUtils.getSharedStats(playersProfiles);
-            const newSquad = new Squad({_id : sortedPlayersIds.join(''),
-                playersSharedGamesStats : sharedGamesStats.playersSharedGamesStats,
-                sharedGamesGeneralStats : sharedGamesStats.squadSharedGamesStats,
-                lastTimeUpdated : new Date().getTime()
+            const newSquad = new Squad({
+                _id: sortedPlayersIds.join(''),
+                playersSharedGamesStats: sharedGamesStats.playersSharedGamesStats,
+                sharedGamesGeneralStats: sharedGamesStats.squadSharedGamesStats,
+                lastTimeUpdated: new Date().getTime(),
+                usernames: usernames, platforms: platforms
             });
             await newSquad.save();
             res.status(201).json(
                 {
-                    squadID : newSquad.id, playersSharedGamesStats : sharedGamesStats.playersSharedGamesStats,
-                    sharedGamesGeneralStats : sharedGamesStats.squadSharedGamesStats, allTimePlayersStats : allTimeGamesStats
+                    squadID: newSquad.id, playersSharedGamesStats: sharedGamesStats.playersSharedGamesStats,
+                    sharedGamesGeneralStats: sharedGamesStats.squadSharedGamesStats, allTimePlayersStats: allTimeGamesStats
                 });
         }
     }
-    catch (err) { 
+    catch (err) {
         console.log(err);
         let error = new HttpError(`Creating squad failed, make sure you enter a valid information and all the players have public profiles at activision`, 500);
         // The case the error occurred after we found the players profiles
-        if(playersFound) {
+        if (playersFound) {
             error = new HttpError("Creating squad failed, please try again", 500);
         }
         return next(error);
@@ -138,11 +140,11 @@ exports.comparePlayers = async (req, res, next) => {
     }
 
     const { usernames, platforms } = req.body;
-    if(usernames.length != platforms.length) {
+    if (usernames.length != platforms.length) {
         const error = new HttpError('Invalid inputs passed, please check your data.', 422);
         return next(error);
     }
-    
+
     let playersFound = false;  // Boolean flag indicator that will indicate if we found the players or not, in order to acknowledge the error.
     try {
         /* In the next 3 lines we will create requests for retrieving the players profiles, 
@@ -154,20 +156,20 @@ exports.comparePlayers = async (req, res, next) => {
         /* After we successfully extract the players profiles we will sort them according the profiles id's because i defined the 'Squad'
          * object ID in the database according to the profiles ID's when they are sorted and chained into single string which is the Squad ID.
          * I did that to prevent duplicate squads in the database which contain the same players.
-         */ 
+         */
         const sortedPlayersIds = playersProfiles.map(profile => profile.profileID);
         playersFound = true;
         sortedPlayersIds.sort();
         // Check for existing squad.
-        let existingSquad = await Squad.findById(sortedPlayersIds.join(''));  
+        let existingSquad = await Squad.findById(sortedPlayersIds.join(''));
         // if the squad exists or not we need the updated all time stats.
-        const allTimeGamesStats = squadUtils.getPlayersLifetimeStats(playersProfiles);  
+        const allTimeGamesStats = squadUtils.getPlayersLifetimeStats(playersProfiles);
         if (existingSquad) {
             // In case we already have identical squad in the database we will not create him again...
             res.status(200).json(
                 {
-                    playersSharedGamesStats : existingSquad.playersSharedGamesStats,
-                    sharedGamesGeneralStats : existingSquad.sharedGamesGeneralStats, allTimePlayersStats : allTimeGamesStats
+                    playersSharedGamesStats: existingSquad.playersSharedGamesStats,
+                    sharedGamesGeneralStats: existingSquad.sharedGamesGeneralStats, allTimePlayersStats: allTimeGamesStats
                 });
         }
         else {
@@ -176,16 +178,16 @@ exports.comparePlayers = async (req, res, next) => {
             const sharedGamesStats = squadUtils.getSharedStats(playersProfiles);
             res.status(200).json(
                 {
-                    playersSharedGamesStats : sharedGamesStats.playersSharedGamesStats,
-                    sharedGamesGeneralStats : sharedGamesStats.squadSharedGamesStats, allTimePlayersStats : allTimeGamesStats
+                    playersSharedGamesStats: sharedGamesStats.playersSharedGamesStats,
+                    sharedGamesGeneralStats: sharedGamesStats.squadSharedGamesStats, allTimePlayersStats: allTimeGamesStats
                 });
         }
     }
-    catch (err) { 
+    catch (err) {
         console.log(err);
         let error = new HttpError(`Players compare failed, make sure you enter a valid information and all the players have public profiles at activision`, 500);
         // The case the error occurred after we found the players profiles
-        if(playersFound) {
+        if (playersFound) {
             error = new HttpError("Players compare failed, please try again", 500);
         }
         return next(error);
