@@ -33,13 +33,16 @@ exports.getMatch = async (req, res, next) => {
             possibleCause = "Check the DB status";
             const newMatch = new WarzoneGame({
                 _id : gameId,
-                gameStats: matchStats.data.data
+                gameStats: matchStats.data.data,
+                lastTouched : new Date().getTime()
             });
             await newMatch.save();
             console.log("New match object created in the database");
             res.status(200).json({ matchStats: matchStats.data.data });
         }
         else {
+            match.lastTouched = new Date().getTime();
+            await match.save();
             console.log("Game details are in the database, we return them from there");
             res.status(200).json({ matchStats: match.gameStats });
         }

@@ -16,7 +16,12 @@ const gameSchema = new Schema({
     signedUsers : [{
         type : Schema.Types.ObjectId,
         ref : 'warzoneUser'
-    }]
+    }],
+    // Will use the 'lastTouched' variable to determine if we want to delete the object from the database cache.
+    lastTouched : {
+        type : Number,
+        required: true
+    }
 });
 
 module.exports = mongoose.model('warzoneGame', gameSchema);
