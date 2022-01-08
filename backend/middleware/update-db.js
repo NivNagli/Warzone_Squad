@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const WarzoneUser = require('../models/warzoneUser');
 const WarzoneSquad = require('../models/warzoneSquad');
+const WarzoneGame = require('../models/warzoneGame');
 
 exports.updateUsersData = async () => {
     /************************************************************************************************
@@ -22,7 +23,7 @@ exports.updateUsersData = async () => {
         }
     });
     const releaseBarrier = await Promise.all(usersUpdateRequestsBarrier);
-    console.log(`an update attempt as been done for ${numOfUsersUpdateAttempts} users.`);
+    console.log(`An update attempt as been done for ${numOfUsersUpdateAttempts} users.`);
 };
 
 exports.updateSquadsData = async () => {
@@ -45,5 +46,12 @@ exports.updateSquadsData = async () => {
         }
     });
     const releaseBarrier = await Promise.all(squadsUpdateRequestsBarrier);
-    console.log(`an update attempt as been done for ${numOfSquadsUpdateAttempts} squads.`);
+    console.log(`An update attempt as been done for ${numOfSquadsUpdateAttempts} squads.`);
+};
+
+exports.cleanSavedGames = async () => {
+    const timePeriodForUnTouchedGame = 43200000; // 12 hours in milliseconds, if no one search for this game after 12 hours we will delete him for the db.
+    const nextUpdateWindowTime = new Date().getTime() - timePeriodForUnTouchedGame;
+    await WarzoneGame.deleteMany({"lastTouched" : {$lt: nextUpdateWindowTime}});
+    console.log("An attempt was made to delete unpopular games.");
 };

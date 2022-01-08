@@ -12,7 +12,11 @@ const userSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'warzoneUser',
         required: true
-    }
+    },
+    squads : [{
+        type : Schema.Types.ObjectId,
+        ref : 'warzoneSquad'
+    }]
 });
 
 userSchema.plugin(uniqueValidator);

@@ -208,6 +208,53 @@ exports.login = async (req, res, next) => {
     }
     console.log("Login succeed!");
     res
-    .status(200)
-    .json({ userId: existingUser.id, gameProfileId: existingUser.gameProfile, token: token });
+        .status(200)
+        .json({ userId: existingUser.id, gameProfileId: existingUser.gameProfile, token: token });
+};
+
+const addSquad = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const error = new HttpError('Invalid inputs passed, please check your data.', 422);
+        return next(error);
+    }
+    const { usernames, platforms, userID } = req.body;
+    if (usernames.length != platforms.length) {
+        const error = new HttpError('Invalid inputs passed, please check your data.', 422);
+        return next(error);
+    }
+    let squadFound = false;
+    try {
+        const squadData = await axios(addSquadConfigBuilder(usernames, platforms));
+        squadFound = true;
+        const currentUser = await User.findById(userID);
+        if (!currentUser.squads.includes(squadData.squadID)) {
+            currentUser.squads.push(squadData.squadID);
+            await currentUser.save();
+        }
+        return res.status(200).json({ squadID : squadData.squadID});
+    }
+    catch (err) {
+        let error;
+        if(squadFound) {
+            error = new HttpError("Creating a new squad failed, make sure all the users data is valid!", 500);
+        }
+        else {
+            error = new HttpError("Creating a new squad failed, please try again later.", 500);
+        }
+        return next(error);
+    }
+
+};
+
+const addSquadConfigBuilder = (usernames, platforms) => {
+    return {
+        method: 'get',
+        url: `${process.env.API_PREFIX}/squad/create-squad`,
+        headers: {},
+        body: {
+            usernames: usernames,
+            platforms: platforms
+        }
+    };
 };

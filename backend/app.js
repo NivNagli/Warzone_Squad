@@ -58,6 +58,12 @@ cron.schedule('*/17 * * * *', () => {
   updateExecuter.updateSquadsData();
 });
 
+/* Setting the interval and function inside him that update the warzone squads inside the database */
+cron.schedule('0 0 */12 * * *', () => {
+  console.log(`Warzone games cleaner interval execute on: ${new Date()}`);
+  updateExecuter.cleanSavedGames();
+});
+
 /* Super 'Catcher' for errors handling */
 // Not all errors will be handled by this middleware there is some methods who will handle the errors by themselves.
 app.use((error, req, res, next) => {
