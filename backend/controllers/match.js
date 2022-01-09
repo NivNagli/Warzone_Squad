@@ -41,6 +41,7 @@ exports.getMatch = async (req, res, next) => {
             res.status(200).json({ matchStats: matchStats.data.data });
         }
         else {
+            // Someone searched for existing match, we will update the lastTouched and will return the stats.
             match.lastTouched = new Date().getTime();
             await match.save();
             console.log("Game details are in the database, we return them from there");
