@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const axios = require('axios');
 const { validationResult } = require('express-validator');
 const HttpError = require('../models/http-error');
-
 const User = require('../models/user');
 const gameProfile = require('../models/warzoneUser');
 
@@ -212,7 +211,7 @@ exports.login = async (req, res, next) => {
         .json({ userId: existingUser.id, gameProfileId: existingUser.gameProfile, token: token });
 };
 
-const addSquad = async (req, res, next) => {
+exports.addSquad = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         const error = new HttpError('Invalid inputs passed, please check your data.', 422);
@@ -226,17 +225,18 @@ const addSquad = async (req, res, next) => {
     let squadFound = false;
     try {
         const squadData = await axios(addSquadConfigBuilder(usernames, platforms));
+        const squadID = squadData.data.squadID;
         squadFound = true;
         const currentUser = await User.findById(userID);
-        if (!currentUser.squads.includes(squadData.squadID)) {
-            currentUser.squads.push(squadData.squadID);
+        if (!currentUser.squads.includes(squadID)) {
+            currentUser.squads.push(squadID);
             await currentUser.save();
         }
-        return res.status(200).json({ squadID : squadData.squadID});
+        return res.status(200).json({ squadID: squadID });
     }
     catch (err) {
         let error;
-        if(squadFound) {
+        if (squadFound) {
             error = new HttpError("Creating a new squad failed, make sure all the users data is valid!", 500);
         }
         else {
@@ -248,13 +248,15 @@ const addSquad = async (req, res, next) => {
 };
 
 const addSquadConfigBuilder = (usernames, platforms) => {
+    // Will create a config for post request to the create squad service which will create a new squad in case the squad not exists, or will return the existing ones.
+    const body = {
+        usernames: usernames,
+        platforms: platforms
+    }
     return {
-        method: 'get',
+        method: 'post',
         url: `${process.env.API_PREFIX}/squad/create-squad`,
         headers: {},
-        body: {
-            usernames: usernames,
-            platforms: platforms
-        }
+        data: body
     };
 };

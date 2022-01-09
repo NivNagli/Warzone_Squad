@@ -13,9 +13,9 @@ const userSchema = new Schema({
         ref: 'warzoneUser',
         required: true
     },
+    /* Because i changed the format of the squad _id field in the mongodb database i will save them as string */
     squads : [{
-        type : Schema.Types.ObjectId,
-        ref : 'warzoneSquad'
+        type : String, required: true
     }]
 });
 

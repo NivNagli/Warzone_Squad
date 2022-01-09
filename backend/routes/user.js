@@ -15,12 +15,10 @@ router.post(
         .isLength({min : 5}),
 
         check('username')
-        .not()
-        .isEmpty(),
+        .isLength({min : 1}),
 
         check('platform')
-        .not()
-        .isEmpty(),
+        .isLength({min : 1})
     ],
 
     userController.signup
@@ -39,6 +37,25 @@ router.post(
     ],
 
     userController.login
+);
+
+router.post(
+    '/add-squad',
+
+    [
+        check('usernames')
+        .not()
+        .isEmpty(),
+
+        check('platforms')
+        .not()
+        .isEmpty(),
+
+        check('userID')
+        .isLength({min : 1})
+    ],
+
+    userController.addSquad
 );
 
 module.exports = router;
