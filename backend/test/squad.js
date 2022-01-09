@@ -27,12 +27,12 @@ describe('Squad Controller: Make sure we dont have that squad in the database be
                 return this;
             },
             json: function (data) {
-                res.data = data;
+                this.data = data;
             }
         };
         squadController.getSquad(goodUserReq, res, () => { }).then(() => {
             expect(res.statusCode).to.be.equal(201);
-            tempSquadID = res.data;
+            tempSquadID = res.data.squadID;
             done();
         });
     }).timeout(25000);
@@ -57,7 +57,7 @@ describe('Squad Controller: Make sure we dont have that squad in the database be
     }).timeout(2000);
 
     after(function (done) {
-        Squad.deleteOne({_id : tempSquadID.squadID})
+        Squad.deleteOne({_id : tempSquadID})
             .then(() => {
                 console.log("Delete the test squad successfully completed.");
                 done();

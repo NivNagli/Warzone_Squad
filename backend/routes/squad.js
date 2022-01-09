@@ -3,7 +3,7 @@ const { check } = require('express-validator');
 const router = express.Router();
 const squadController = require('../controllers/squad');
 
-router.get(
+router.post(
     '/create-squad',
 
     [
@@ -19,7 +19,7 @@ router.get(
     squadController.getSquad
 );
 
-router.get(
+router.post(
     '/compare',
 
     [
