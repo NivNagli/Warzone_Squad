@@ -83,14 +83,14 @@ exports.signup = async (req, res, next) => {
             });
             await createdUser.save();
             const token = jwt.sign(
-                { userId: createdUser.id, email: createdUser.email },
+                { userID: createdUser.id, email: createdUser.email },
                 process.env.JWT_SECRET,
                 { expiresIn: '2h' }
             );
             console.log("New user just created in the site, and saved in the database.");
             res
                 .status(201)
-                .json({ userId: createdUser.id, gameProfileId: newGameProfileID, token: token });
+                .json({ userID: createdUser.id, gameProfileID: newGameProfileID, token: token });
             return;
         }
         catch (err) {
@@ -115,14 +115,14 @@ exports.signup = async (req, res, next) => {
             });
             await createdUser.save();
             const token = jwt.sign(
-                { userId: createdUser.id, email: createdUser.email },
+                { userID: createdUser.id, email: createdUser.email },
                 process.env.JWT_SECRET,
                 { expiresIn: '2h' }
             );
             console.log("New user in the site just created and saved in the database.");
             res
                 .status(201)
-                .json({ userId: createdUser.id, gameProfileId: existingProfile.id, token: token });
+                .json({ userID: createdUser.id, gameProfileID: existingProfile.id, token: token });
             return;
 
         }
