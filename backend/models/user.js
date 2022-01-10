@@ -15,7 +15,7 @@ const userSchema = new Schema({
     },
     /* Because i changed the format of the squad _id field in the mongodb database i will save them as string */
     squads : [{
-        type : String, required: true
+        type : Object, required: true
     }]
 });
 

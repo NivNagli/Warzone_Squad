@@ -217,7 +217,7 @@ exports.addSquad = async (req, res, next) => {
         const error = new HttpError('Invalid inputs passed, please check your data.', 422);
         return next(error);
     }
-    const { usernames, platforms, userID } = req.body;
+    const { usernames, platforms, userID, squadName } = req.body;
     if (usernames.length != platforms.length) {
         const error = new HttpError('Invalid inputs passed, please check your data.', 422);
         return next(error);
@@ -228,15 +228,26 @@ exports.addSquad = async (req, res, next) => {
         const squadID = squadData.data.squadID;
         squadFound = true;
         const currentUser = await User.findById(userID);
-        if (!currentUser.squads.includes(squadID)) {
-            currentUser.squads.push(squadID);
+        const checkForExistingSquad = squadExists(currentUser, squadName, squadID);
+        if (!checkForExistingSquad) {
+            currentUser.squads.push({squadID : squadID, squadName : squadName});
             await currentUser.save();
+            return res.status(200).json({ squadID: squadID });
         }
-        return res.status(200).json({ squadID: squadID });
+        else {
+            let error;
+            if(checkForExistingSquad.squadExists) {
+                error = new HttpError(`You already have squad that contains those players, the squad name is: '${checkForExistingSquad.existingSquadName}' `, 422);
+            }
+            else {
+                error = new HttpError(`You already have squad under this name please select different squad name.`, 422);
+            }
+            return next(error);
+        }
     }
     catch (err) {
         let error;
-        if (squadFound) {
+        if (!squadFound) {
             error = new HttpError("Creating a new squad failed, make sure all the users data is valid!", 500);
         }
         else {
@@ -259,4 +270,26 @@ const addSquadConfigBuilder = (usernames, platforms) => {
         headers: {},
         data: body
     };
+};
+
+const squadExists = (user, squadName, squadID) => {
+    const result = {
+        squadExists : false,
+        squadNameExists : false,
+        existingSquadName : ""
+    };
+    for(let i = 0 ; i < user.squads.length ; i++) {
+        if(user.squads[i].squadID === squadID) {
+            result.squadExists = true;
+            result.existingSquadName = user.squads[i].squadName;
+            return result;
+        }
+
+        if(user.squads[i].squadName === squadName) {
+            // If we already have a squad under this name we will tell the user he cant do that.
+            result.squadNameExists = true;
+            return result;
+        };
+    }
+    return null;
 };

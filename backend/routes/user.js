@@ -52,6 +52,9 @@ router.post(
         .isEmpty(),
 
         check('userID')
+        .isLength({min : 1}),
+        
+        check('squadName')
         .isLength({min : 1})
     ],
 
