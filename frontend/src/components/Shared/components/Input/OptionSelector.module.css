@@ -12,7 +12,7 @@
     background: rgba(0, 41, 102, 0.795);
     color: rgb(255, 187, 0);
     border-radius: 0.25em;
-    box-shadow: 0 0 1em 0 rgba(0, 88, 219, 0.877);
+    box-shadow: 0 0 0.35em 0 rgba(0, 88, 219, 0.877);
     cursor: pointer;
     text-align: center;
     font-weight: bold;

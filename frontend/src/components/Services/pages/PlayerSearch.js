@@ -16,14 +16,15 @@ const PlayerSearch = () => {
         event.preventDefault();
         console.log("Will need to send http request here to the server and afterwards to re render the result with the History Hook");
         console.log(`Input In Search Form => username = ${enteredUsername}, platform = ${enteredPlatform}`);
-      };
-        
+    };
 
-    
+
+
     return (
         <React.Fragment>
             <form className={classes.search_form} onSubmit={placeSubmitHandler}>
-                <SearchUser updateSearchFields={onChangeSearchFields}/>
+                <h2 className={classes.search_h2}>Search Player Profile</h2>
+                <SearchUser updateSearchFields={onChangeSearchFields} />
                 <Button type="submit" disabled={!enteredUsername} parentClass={classes.search_button}>
                     Search
                 </Button>
