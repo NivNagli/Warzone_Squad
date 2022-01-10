@@ -196,7 +196,7 @@ exports.login = async (req, res, next) => {
     let token;
     try {
         token = jwt.sign(
-            { userId: existingUser.id, email: existingUser.email },
+            { userID: existingUser.id, email: existingUser.email },
             process.env.JWT_SECRET,
             { expiresIn: '2h' }
         );
@@ -208,7 +208,7 @@ exports.login = async (req, res, next) => {
     console.log("Login succeed!");
     res
         .status(200)
-        .json({ userId: existingUser.id, gameProfileId: existingUser.gameProfile, token: token });
+        .json({ userID: existingUser.id, gameProfileID: existingUser.gameProfile, token: token });
 };
 
 exports.addSquad = async (req, res, next) => {
