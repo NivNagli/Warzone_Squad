@@ -33,7 +33,7 @@ exports.signup = async (req, res, next) => {
 
     if (checkForExistingUser) {
         const error = new HttpError(
-            'User exists already, please login instead.',
+            'User exists already under this email, please login instead.',
             422
         );
         return next(error);
