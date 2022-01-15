@@ -2,10 +2,20 @@ import { NavLink } from 'react-router-dom';
 import React from 'react';
 import classes from './NavLinks.module.css';
 import Button from '../Button/Button';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { authActions} from '../../../../store/auth';
+import { useHistory } from 'react-router-dom'
 
 const NavLinks = props => {
-    const isLoggedIn = false;
-
+    const dispatch = useDispatch();
+    const isLoggedIn = useSelector(state => state.auth.isAuthenticated);
+    
+    const history = useHistory();
+    const onLogout = () => {
+        dispatch(authActions.logout());
+        history.push("/");
+    };
     return (
         <React.Fragment>
             <div className={classes.nav_links}>
@@ -32,7 +42,7 @@ const NavLinks = props => {
                     <Button to={'/Signup'} parentClass={classes.button}>Signup</Button>
                 )}
                 {isLoggedIn && (
-                    <Button to={'/Logout'} parentClass={classes.button}>Logout</Button>
+                    <Button parentClass={classes.button} onClick={onLogout}>Logout</Button>
                 )}
             </div>
             

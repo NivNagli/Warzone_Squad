@@ -1,17 +1,26 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
+// Components imports:
 import Input from '../../Shared/components/Input/Input';
 import Button from '../../Shared/components/Button/Button';
 import classes from './Signup.module.css';
 import OptionSelector from '../../Shared/components/Input/OptionSelector';
+import LoadingSpinner from '../../Shared/components/UI/LoadingSpinner';
+import ErrorMessage from '../../Shared/components/UI/ErrorMessage';
+// Methods and variables imports:
 import {
   VALIDATOR_REQUIRE,
   VALIDATOR_MINLENGTH,
   VALIDATOR_EMAIL
 } from '../../Shared/util/validators';
+import API_PREFIX from '../../../sharedUrls';
+// custom and built-in hooks imports:
 import { useForm } from '../../Shared/hooks/form-hook';
+import { useDispatch } from 'react-redux';
+import { authActions } from '../../../store/auth';
+import { useHttpClient } from '../../Shared/hooks/http-hook';
 
 const Signup = () => {
+  // The useForm custom hook will serve us in order to manage the signup form.
   const [formState, inputHandler] = useForm(
     {
       email: {
@@ -33,15 +42,63 @@ const Signup = () => {
     },
     false
   );
-
+  // This state will be updated each time the user will pick different platform.
   const [enteredPlatform, setEnteredPlatform] = useState('psn');
 
-  const placeSubmitHandler = async event => { // TODO: In the future we should send req here.
-    event.preventDefault();
-    console.log(`FROM SignUp Submit : Entered inputs = ${formState.inputs.username.value} Entered Platform = ${enteredPlatform}`);
+  // This 4 variables will serve us to handle the login attempt.
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const dispatch = useDispatch();
+  useEffect(() => { }, [error]);
+
+  /* This method will serve use to send request to the server and will handle the response
+ * accordingly. */
+  const signupAttempt = async (email, password, username, platform) => {
+    try {
+      /* Using our http custom hook in order to send the request and update the 'isLoading', 'error'
+       * States that the hook produce for us */
+      const responseData = await sendRequest(
+        `${API_PREFIX}/user/signup`, // URL
+        'POST', // METHOD
+        { // BODY
+          email: email,
+          password: password,
+          username: username,
+          platform: platform
+        },
+        { // HEADERS
+        },
+        "Signup Failed, Check credentials and try again, [SPP]." // DEFAULT ERROR MSG SPP = server problem possibility.
+      );
+      return responseData; // The case the user enter valid credentials.
+    }
+    catch (e) {
+      console.log(`err__login = ${e}`); // The case the user entered invalid credentials / server problem.
+      return null;
+    }
   };
 
-  const selectChanged = (val) => {// TODO: will need that to send the correct platform.
+    // The submit handler for the signup form, this is the procedure that will execute in button press event:
+  const placeSubmitHandler = async event => {
+    event.preventDefault();
+    try {
+      const reqData = await signupAttempt(formState.inputs.email.value, formState.inputs.password.value, formState.inputs.username.value, enteredPlatform);
+      if (reqData) {  // The case the user successfully signed up.
+        const { userID, gameProfileID, token } = reqData.data;
+        // Using the redux function in order to update that the user is authenticated.
+        dispatch(authActions.login({
+          userID: userID,
+          gameProfileID: gameProfileID,
+          token: token
+        }));
+      }
+    }
+    catch (e) {
+      console.log(`Some unknown error occurred in signup page err, = ${e}`);
+    }
+
+  };
+
+  const selectChanged = (val) => {// will need that to send the correct platform.
     setEnteredPlatform(val.target.value);
   };
 
@@ -51,6 +108,10 @@ const Signup = () => {
   return (
     <React.Fragment>
       <form className={classes.signup_form} onSubmit={placeSubmitHandler}>
+        {isLoading && <LoadingSpinner asOverlay />}
+        {error && <ErrorMessage error={error} />}
+
+
         <Input
           id="email"
           element="input"
