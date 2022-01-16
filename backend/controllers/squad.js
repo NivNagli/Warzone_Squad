@@ -12,7 +12,6 @@ exports.getSquad = async (req, res, next) => {
     /* First we will check if we received errors from the route with the help of express-validator third party package */
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        const { usernames, platforms } = req.body;
         const error = new HttpError('Invalid inputs passed, please check your data.', 422);
         return next(error);
     }
