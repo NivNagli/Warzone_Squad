@@ -47,7 +47,7 @@ squadSchema.methods.updateStats = async function() {
      * in the middleware/update-db.js file, we also try to made second attempt in case of failure. */
     try {
         const updatedStats = await squadModelUtil.updateSquadStats(this);  // i made separate file for extracting the new games information in case there are any.
-        if(!updatedStats) return null; // The case we dont need to update the stats.
+        if(!updatedStats) return new Promise((resolve) => { resolve(null); }); // The case we dont need to update the stats.
         this.playersSharedGamesStats = updatedStats.updatedPlayersSharedGamesStats; // The case we find new stats
         this.sharedGamesGeneralStats = updatedStats.updatedSharedGamesGeneralStats; // The case we find new stats
         return this.save();  // Return promise which will try to update the new warzone squad in the database with the new stats.

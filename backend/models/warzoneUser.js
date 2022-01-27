@@ -35,7 +35,7 @@ const userSchema = new Schema({
 userSchema.methods.updateStats = async function() {
     try {
         const updatedStats = await this.getUpdatedStats(); // Execute the protocol that try to update the stats.
-        if(!updatedStats) return null; // The case we dont need to update the stats.
+        if(!updatedStats) return new Promise((resolve) => { resolve(null); }); // The case we dont need to update the stats.
         this.lastGamesStats = updatedStats.lastGamesStats // The case we find new stats
         this.generalStats = updatedStats.generalStats; // ^^
         return this.save();  // Return promise which will try to update the new warzone profile in the database with the new stats.
