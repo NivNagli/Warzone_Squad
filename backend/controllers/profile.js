@@ -37,7 +37,7 @@ exports.getGameProfile = async (req, res, next) => {
     try {
         const gameProfile = await WarzoneUser.findOne({ username: username, platform: platform });
         if (!gameProfile) {
-            description = "Last Games extract failed";  // default message description in case we will not get one from our requests.
+            description = "Failed to search the profile, make sure you enter the correct details and that the user have public activision account.";  // default message description in case we will not get one from our requests.
             possibleCause = "check the username & platform and the extract controller";
 
             /* Im making promise 'barrier' in order to run the 2 requests in parallel */

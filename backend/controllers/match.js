@@ -26,7 +26,7 @@ exports.getMatch = async (req, res, next) => {
         const match = await WarzoneGame.findById(gameId);
         if(!match) {
             // The case we dont have this match in our database.
-            description = "Game extract failed";
+            description = "Game search failed, please try again in a few moments";
             possibleCause = "check the gameID and the extract controller";
             const matchStats = await axios(config);
             description = "Failed attempt to save the data in the database";
