@@ -55,7 +55,7 @@ const LoginPage = () => {
         },
         { // HEADERS
         },
-        "Login Failed, Check credentials and try again, [SPP]." // DEFAULT ERROR MSG SPP = server problem possibility.
+        "Login Failed, Check credentials and try again." // DEFAULT ERROR MSG, SPP = server problem possibility.
       );
       return responseData; // The case the user enter valid credentials.
     }
@@ -71,6 +71,8 @@ const LoginPage = () => {
     try {
       const reqData = await loginAttempt(formState.inputs.email.value, formState.inputs.password.value);
       if (reqData) {  // The case the user successfully signed in.
+        console.log(1);
+        clearError();  // TODO: Make sure that not cause problems in edge cases.
         const { userID, gameProfileID, token } = reqData.data;
         // Using the redux function in order to update that the user is authenticated.
         dispatch(authActions.login({
@@ -83,8 +85,8 @@ const LoginPage = () => {
     catch (e) { 
       console.log(`Some unknown error occurred in login page, err = ${e}`);
     }
-    // Check if the entered data is correct with the loginAttempt method.
-
+    // In case the login procedure failed the 'error' variable from the custom http hook 
+    // will be responsible to display her.
   };
 
   return (

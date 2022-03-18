@@ -68,7 +68,7 @@ color: rgba(255, 255, 255, 0.5);
       }
       .nav_buttons .button{
         margin-right: 20px;
-        background-color: #ff9f1c;
+        background-color: rgba(21, 226, 107, 0.877);
         border: none;
         font-family: "Poppins";
         padding: 0.625rem 0;
@@ -91,7 +91,7 @@ color: rgba(255, 255, 255, 0.5);
         display: flex;
       }
       .nav_buttons .button{
-        background-color: #ff9f1c;
+        background-color: rgba(21, 226, 107, 0.877);
         border: none;
         font-family: "Poppins";
         font-size: 0.7rem;

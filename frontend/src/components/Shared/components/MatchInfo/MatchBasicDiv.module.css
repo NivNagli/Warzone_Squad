@@ -1,0 +1,27 @@
+.match__div {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width:9.5rem;
+    height:3rem;
+    color:rgb(230, 213, 213);
+    
+  }
+  
+  .match__top{
+    font-size:1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-style: oblique;
+  }
+  
+  .match__bottom{
+    font-size:1.15rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  

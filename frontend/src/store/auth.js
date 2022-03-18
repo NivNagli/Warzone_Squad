@@ -1,11 +1,26 @@
 // src/store/auth.js
 import { createSlice } from '@reduxjs/toolkit';
 
+// const parseJwt = (token) => { // TODO: Relevant to late stage when we will need to check the jwt expression
+//   try {
+//     return JSON.parse(atob(token.split(".")[1]));
+//   } catch (e) {
+//     return null;
+//   }
+// }; 
+
+  // if(isAuth) { // TODO: Relevant to late stage when we will need to check the jwt expression
+  //   const decodedJwt = parseJwt(localStorage.getItem("token"));
+  //   console.log(decodedJwt.exp * 1000 < Date.now());
+  //   console.log(decodedJwt.exp * 1000, Date.now());
+  // }
+
 const initialAuthState = {
   isAuthenticated: localStorage.getItem('token') ? true : false,
   userID: localStorage.getItem('userID') || null,
   gameProfileID: localStorage.getItem('gameProfileID') || null
 };
+
 
 const authSlice = createSlice({
   name: 'authentication',

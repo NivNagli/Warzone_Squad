@@ -3,10 +3,12 @@
     font-family: "Poppins";
     max-width: 100%;
     height: 5rem;
-    background-color: #011627;
+    background-color: #022038;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1.5px solid;
+    border-color: #e74c3c;
   }
 
 .navbar__link {

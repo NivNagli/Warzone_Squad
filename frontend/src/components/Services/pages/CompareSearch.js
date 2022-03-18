@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from "react-router-dom";
 import classes from './CompareSearch.module.css';
 
+// Components imports:
 import SearchUser from '../../Shared/components/Input/SearchUser';
 import Button from '../../Shared/components/Button/Button';
 import OptionSelector from '../../Shared/components/Input/OptionSelector';
+import LoadingSpinner from '../../Shared/components/UI/LoadingSpinner';
+import ErrorMessage from '../../Shared/components/UI/ErrorMessage';
+
+// custom and built-in hooks imports:
+import { useHttpClient } from '../../Shared/hooks/http-hook';
+import {playersCompareAttempt} from '../../../Middlewares/backend-requests';
 
 const CompareSearch = () => {
     const [enteredPlatformUser1, setEnteredPlatformUser1] = useState('psn');
@@ -35,6 +43,11 @@ const CompareSearch = () => {
     };
     /* 4 potential users states for the search field results */
     // =================================================================
+
+    const [whileSearch, setWhileSearch] = useState(false); // This state will prevent spamming from the user while searching
+    let history = useHistory();
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
+    useEffect(() => { }, [error]);
 
     // options values for number of players select component.
     const optionsValues = [2, 3, 4];
@@ -68,9 +81,36 @@ const CompareSearch = () => {
 
     const placeSubmitHandler = async event => { // TODO: In the future we should send req here.
         event.preventDefault();
+        setWhileSearch(true); // Will set the search button into disabled
+        let userFound = false;
         console.log("Will need to send http request here to the server and afterwards to re render the result with the History Hook");
         console.log(`Info By users : [1] : ${enteredUsernameUser1} ${enteredPlatformUser1} [2] : ${enteredUsernameUser2} ${enteredPlatformUser2} 
         [3] : ${enteredUsernameUser3} ${enteredPlatformUser3} [4] : ${enteredUsernameUser4} ${enteredPlatformUser4}`);
+
+        try {
+            const usernames = [enteredUsernameUser1, enteredUsernameUser2, enteredUsernameUser3, enteredUsernameUser4].slice(0, enteredNumberOfPlayers);
+            const platforms = [enteredPlatformUser1, enteredPlatformUser2, enteredPlatformUser3, enteredPlatformUser4].slice(0, enteredNumberOfPlayers);
+            const reqData = await playersCompareAttempt(usernames, platforms, sendRequest);
+            console.log(reqData); // TODO: Delete this print while finalizing.
+            if(reqData) {
+                userFound = true;
+                userFound = 
+                clearError();
+                setWhileSearch(false);
+                console.log(reqData);
+                // history.push({
+                //     pathname:`/playerSearch/${enteredUsername}/${enteredPlatform}`,
+                //     state : {username : enteredUsername, platform : enteredPlatform}
+                // });
+            }
+        }
+        catch (e) {
+            console.log(`Some unknown error occurred in search page, err = ${e}`);
+        }
+        if(!userFound) {
+            setWhileSearch(false);
+        };
+
     };
 
     const playersDataArray = [
@@ -81,14 +121,17 @@ const CompareSearch = () => {
     ]
     return (
         <React.Fragment>
+            {error && <ErrorMessage error={error} />}
             <form className={classes.compare_form} onSubmit={placeSubmitHandler}>
+                {isLoading && <LoadingSpinner asOverlay />}
+
                 <div className={classes.players_select_div}>
                     <h3 className={classes.compare_header}>Select Number Of Players</h3>
                     <OptionSelector optionsValues={optionsValues} optionsDescriptions={optionsDescriptions} center={true} selectChanged={selectChanged} />
                 </div>
                 {playersDataArray.slice(0, enteredNumberOfPlayers)}
                 <div className={classes.div4button}>
-                    <Button type="submit" disabled={!formIsValid} parentClass={classes.compare_button}>
+                    <Button type="submit" disabled={!formIsValid || whileSearch} parentClass={classes.compare_button}>
                         Compare
                     </Button>
                 </div>
