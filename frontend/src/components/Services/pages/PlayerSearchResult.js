@@ -8,7 +8,10 @@ import { Redirect } from 'react-router-dom'
 import { playerSearchAttempt } from '../../../Middlewares/backend-requests';
 import GeneralStatsTable from '../../Shared/components/Tables/GeneralStatsTable';
 import PlayerBasicInfo from '../../Shared/components/PlayersInfo/PlayerBasicInfo';
+import MatchBasicDiv from '../../Shared/components/MatchInfo/MatchBasicDiv';
 import { lifeTimeFilter, allWeeklyFilter } from '../../Shared/util/dataFilters';
+import Card from '../../Shared/components/UI/Card';
+import MatchList from '../../Shared/components/MatchInfo/MatchList';
 
 
 const PlayerSearchResult = (props) => {
@@ -55,20 +58,21 @@ const PlayerSearchResult = (props) => {
     else {
         const filteredLifetimeStats = lifeTimeFilter(userData.data.generalStats.br_lifetime_data);
         let filteredWeeklyStats;
-        if(userData.data.generalStats.weeklyStats) {
+        if (userData.data.generalStats.weeklyStats) {
             console.log("A");
-            if(userData.data.generalStats.weeklyStats.all){
+            if (userData.data.generalStats.weeklyStats.all) {
                 console.log("Aa");
                 filteredWeeklyStats = allWeeklyFilter(userData.data.generalStats.weeklyStats.all);
             }
         }
         console.log(`gaga : ${userData.data.generalStats.br_lifetime_data}`);
-        if(filteredWeeklyStats) {
+        if (filteredWeeklyStats) {
             return (
                 <React.Fragment>
                     <PlayerBasicInfo name={location.state.username}></PlayerBasicInfo>
                     <GeneralStatsTable header={"Lifetime Stats"} data={filteredLifetimeStats}></GeneralStatsTable>
                     <GeneralStatsTable header={"Weekly Stats"} data={filteredWeeklyStats}></GeneralStatsTable>
+                    <MatchList matches={userData.data.lastGamesStats} numOfMatches={20}></MatchList>
                 </React.Fragment>
             );
         }

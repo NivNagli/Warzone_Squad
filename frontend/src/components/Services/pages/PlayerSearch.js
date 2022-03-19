@@ -10,7 +10,7 @@ import ErrorMessage from '../../Shared/components/UI/ErrorMessage';
 
 // custom and built-in hooks imports:
 import { useHttpClient } from '../../Shared/hooks/http-hook';
-import {playerSearchAttempt} from '../../../Middlewares/backend-requests';
+import {playerSearchAttempt} from '../../../Middlewares/backend-requests'; 
 
 // The component:
 const PlayerSearch = () => {
@@ -27,7 +27,7 @@ const PlayerSearch = () => {
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
     useEffect(() => { }, [error]);
 
-    const placeSubmitHandler = async event => { // TODO: In the future we should send req here.
+    const searchSubmitHandler = async event => { // TODO: In the future we should send req here.
         event.preventDefault();
         setWhileSearch(true); // Will set the search button into disabled
         console.log("Will need to send http request here to the server and afterwards to re render the result with the History Hook");
@@ -59,7 +59,7 @@ const PlayerSearch = () => {
     return (
         <React.Fragment>
             {error && <ErrorMessage error={error} />}
-            <form className={classes.search_form} onSubmit={placeSubmitHandler}>
+            <form className={classes.search_form} onSubmit={searchSubmitHandler}>
                 {isLoading && <LoadingSpinner asOverlay />}
                 
                 <h2 className={classes.search_h2}>Search Player Profile</h2>
