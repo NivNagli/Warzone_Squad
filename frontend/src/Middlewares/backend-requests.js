@@ -73,3 +73,23 @@ export const playersCompareAttempt = async (usernames, platforms, sendRequest) =
         return null;
     }
 };
+
+export const matchSearchAttempt = async (matchID, sendRequest) => {
+    try {
+        const url = `${API_PREFIX}/match/${matchID}`;
+        const reqBody = {};
+        const responseData = await sendRequest(
+            url, // URL
+            'GET', // METHOD
+            reqBody,
+            { // HEADERS
+            },
+            "Failed to find the game data, Please try again, [SPP]." // DEFAULT ERROR MSG SPP = server problem possibility.
+        );
+        return responseData; // The case the user enter valid credentials.
+    }
+    catch (e) {
+        console.log(`err__login = ${e}`); // The case the user entered invalid credentials / server problem.
+        return null;
+    }
+};

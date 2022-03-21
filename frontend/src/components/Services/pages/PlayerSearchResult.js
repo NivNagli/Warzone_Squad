@@ -13,7 +13,6 @@ import { lifeTimeFilter, allWeeklyFilter } from '../../Shared/util/dataFilters';
 import Card from '../../Shared/components/UI/Card';
 import MatchList from '../../Shared/components/MatchInfo/MatchList';
 
-
 const PlayerSearchResult = (props) => {
     let test;
     const location = useLocation();

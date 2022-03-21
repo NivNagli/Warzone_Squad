@@ -27,18 +27,14 @@ const PlayerSearch = () => {
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
     useEffect(() => { }, [error]);
 
-    const searchSubmitHandler = async event => { // TODO: In the future we should send req here.
+    const searchSubmitHandler = async event => {
         event.preventDefault();
         setWhileSearch(true); // Will set the search button into disabled
-        console.log("Will need to send http request here to the server and afterwards to re render the result with the History Hook");
-        console.log(`Input In Search Form => username = ${enteredUsername}, platform = ${enteredPlatform}`);
         let userFound = false;
         try {
             const reqData = await playerSearchAttempt(enteredUsername, enteredPlatform, sendRequest);
-            console.log(reqData); // TODO: Delete this print while finalizing.
             if(reqData) {
                 userFound = true;
-                userFound = 
                 clearError();
                 setWhileSearch(false);
                 history.push({

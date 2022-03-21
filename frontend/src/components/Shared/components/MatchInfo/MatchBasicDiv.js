@@ -6,11 +6,11 @@ import MatchBasicInfo from './MatchBasicInfo';
 
 const MatchBasicDiv = props => {
     const { teamPlacement, gameDate, mode, kdRatio, kills, deaths, damageDone, matchID, scorePerMinute } = props.data;
-    const test = () => {
-        alert(matchID);
+    const gameSearch = () => {
+        props.onSearch(matchID);
     };
     return (
-        <div className={classes.match__div} onClick={test}>
+        <div className={classes.match__div} onClick={gameSearch}>
             <Placement placement={teamPlacement}></Placement>
             <div className={classes.match__head_info}>
                 <MatchDateAndMode mode={mode} date={gameDate}></MatchDateAndMode>
