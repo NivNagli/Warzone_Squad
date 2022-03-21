@@ -22,7 +22,7 @@ exports.updateUsersData = async () => {
             console.log("Need to fix the update interval because we should not be here!");
         }
     });
-    const releaseBarrier = await Promise.all(usersUpdateRequestsBarrier);
+    const releaseBarrier = await Promise.allSettled(usersUpdateRequestsBarrier);
     console.log(`An update attempt as been done for ${numOfUsersUpdateAttempts} users.`);
 };
 
@@ -45,7 +45,7 @@ exports.updateSquadsData = async () => {
             console.log("Need to fix the update interval because we should not be here!");
         }
     });
-    const releaseBarrier = await Promise.all(squadsUpdateRequestsBarrier);
+    const releaseBarrier = await Promise.allSettled(squadsUpdateRequestsBarrier);
     console.log(`An update attempt as been done for ${numOfSquadsUpdateAttempts} squads.`);
 };
 
