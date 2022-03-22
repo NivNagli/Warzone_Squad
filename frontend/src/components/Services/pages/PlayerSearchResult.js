@@ -1,37 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import className from './PlayerSearchResult.module.css';
 import { useLocation } from "react-router-dom";
 import { useHttpClient } from '../../Shared/hooks/http-hook';
-import { useHistory } from "react-router-dom";
-import ErrorMessage from '../../Shared/components/UI/ErrorMessage';
 import { Redirect } from 'react-router-dom'
 import { playerSearchAttempt } from '../../../Middlewares/backend-requests';
 import GeneralStatsTable from '../../Shared/components/Tables/GeneralStatsTable';
 import PlayerBasicInfo from '../../Shared/components/PlayersInfo/PlayerBasicInfo';
-import MatchBasicDiv from '../../Shared/components/MatchInfo/MatchBasicDiv';
 import { lifeTimeFilter, allWeeklyFilter } from '../../Shared/util/dataFilters';
-import Card from '../../Shared/components/UI/Card';
 import MatchList from '../../Shared/components/MatchInfo/MatchList';
 
 const PlayerSearchResult = (props) => {
-    let test;
-    const location = useLocation();
-    const [userFound, setUserFound] = useState(false);
+    let userDataFound; // Flag that will help to determine when the user data is loaded.
+    const location = useLocation(); // Will use the useLocation hook, to get the state that include the input we got from the player search component.
+    const [userFound, setUserFound] = useState(false);  // Another flag that will operate as boolean flag to determine that the user data is loaded
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
-    const [userData, setData] = useState(null);
-    useEffect(() => {
-    }, [test])
+    const [userData, setData] = useState(null);  // This is the variable which will hold the response from our database for the user search.
 
-    if (!location.state) {
+    useEffect(() => {
+    }, [userDataFound]);  // This useEffect will monitor the userDataFound flag and will re-render the page when he change.
+
+    if (!location.state) {  // If we didn't came from the 'PlayerSearch' component we need to redirect.
         return <Redirect to='/' />
     }
     const getUserData = async () => {
+        // Async function that will send a get request to the database with the user information.
         try {
             const reqData = await playerSearchAttempt(location.state.username, location.state.platform, sendRequest);
             if (reqData) {
                 clearError();
-                console.log("RAGA");
-                console.log(reqData);
                 setData(reqData);
                 return 1;
             }
@@ -43,29 +38,28 @@ const PlayerSearchResult = (props) => {
     };
 
     if (!userFound) {
-        test = getUserData();
-        if (test) {
+        // In case the user is not found yet we need to send request to the database.
+        userDataFound = getUserData();
+        if (userDataFound) {
             setUserFound(true);
         }
     }
-    // let test = getUserData();
-    console.log(location.state.username + " " + location.state.platform);
-    console.log(`Test = ${test}`);
+
     if (!userData) {
+        // The case we didn't receive yet the user information.
         return <div></div>;
     }
     else {
+        // First we will filter the information first the 'all time' information and then the 'weekly' in case he exists.
         const filteredLifetimeStats = lifeTimeFilter(userData.data.generalStats.br_lifetime_data);
         let filteredWeeklyStats;
         if (userData.data.generalStats.weeklyStats) {
-            console.log("A");
             if (userData.data.generalStats.weeklyStats.all) {
-                console.log("Aa");
                 filteredWeeklyStats = allWeeklyFilter(userData.data.generalStats.weeklyStats.all);
             }
         }
-        console.log(`gaga : ${userData.data.generalStats.br_lifetime_data}`);
         if (filteredWeeklyStats) {
+            // Display with the weekly state, in case they are exists.
             return (
                 <React.Fragment>
                     <PlayerBasicInfo name={location.state.username}></PlayerBasicInfo>
@@ -76,43 +70,16 @@ const PlayerSearchResult = (props) => {
             );
         }
         else {
+            // The case the player did not play in this week.
             return (
                 <React.Fragment>
+                    <PlayerBasicInfo name={location.state.username}></PlayerBasicInfo>
                     <GeneralStatsTable header={"Lifetime Stats"} data={filteredLifetimeStats}></GeneralStatsTable>
+                    <MatchList matches={userData.data.lastGamesStats} numOfMatches={20}></MatchList>
                 </React.Fragment>
             );
         }
     }
-    // return (
-    //     <React.Fragment>
-    //         {error && <ErrorMessage error={error} />}
-    //     </React.Fragment>
-    // );
 };
 
 export default PlayerSearchResult;
-
-    // const playerSearchAttempt = async (username, platform) => { //TODO: Delete this when finalizing, this was made before the "backend-request" middleware.
-    //     try {
-    //         /* Using our http custom hook in order to send the request and update the 'isLoading', 'error'
-    //          * States that the hook produce for us */
-    //         let url = `${API_PREFIX}/profile/username/${username}/platform/${platform}`;
-    //         if(platform === 'battle') {
-    //             url = makeBattleUrl(username);
-    //         };
-    //         const responseData = await sendRequest(
-    //             url, // URL
-    //             'GET', // METHOD
-    //             { // BODY
-    //             },
-    //             { // HEADERS
-    //             },
-    //             "Searched Failed, Check username and platform and try again, [SPP]." // DEFAULT ERROR MSG SPP = server problem possibility.
-    //         );
-    //         return responseData; // The case the user enter valid credentials.
-    //     }
-    //     catch (e) {
-    //         console.log(`err__login = ${e}`); // The case the user entered invalid credentials / server problem.
-    //         return null;
-    //     }
-    // };

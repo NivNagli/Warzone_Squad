@@ -9,6 +9,10 @@ import { useHistory } from "react-router-dom";
 import {matchSearchAttempt} from '../../../../Middlewares/backend-requests';
 
 const MatchList = props => {
+    /* As the name sound like this component will be a div that contain list of matches, for each match 
+     * we send a async function that send a get request to the server and search for the match information
+     * in case we found that match we redirect to the MatchResult page of that match. */
+    
     const matches = [];
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
     useEffect(() => { }, [error]);

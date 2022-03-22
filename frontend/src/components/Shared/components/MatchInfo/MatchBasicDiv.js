@@ -5,6 +5,8 @@ import MatchDateAndMode from './MatchDateAndMode';
 import MatchBasicInfo from './MatchBasicInfo';
 
 const MatchBasicDiv = props => {
+    /* Basic div for display the general information about match, this component have a onClick handler that
+     * will be used for redirect to the MatchResult page in case the user want to get more specific information about the match. */
     const { teamPlacement, gameDate, mode, kdRatio, kills, deaths, damageDone, matchID, scorePerMinute } = props.data;
     const gameSearch = () => {
         props.onSearch(matchID);

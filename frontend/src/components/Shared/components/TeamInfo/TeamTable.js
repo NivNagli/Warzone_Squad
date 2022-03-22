@@ -4,10 +4,11 @@ import './TeamTable.css';
 const TeamTable = props => {
     const tableHead = theadBuilder(props.playersData[0], props.wantedStats);
     const tableBody = tbodyBuilder(props.playersData, props.wantedStats);
-    console.log("RADDIDIDID");
-    console.log(props.playersData);
     return (
-        <div class="teamTable">
+        <div className="teamTable">
+            <header className="table__header">
+                <h1 className="table__h1">Placement: {props.tableHeader}</h1>
+            </header>
             <table>
                 {tableHead}
                 {tableBody}
@@ -20,11 +21,11 @@ export default TeamTable;
 
 const theadBuilder = (playerData, wantedStats) => {
     const ths = [];
-    ths.push(<th class="placement"></th>);
-    ths.push(<th class="gamerTag">Username</th>);
+    ths.push(<th className="placement"></th>);
+    ths.push(<th className="gamerTag">Username</th>);
     for (const [key, value] of Object.entries(playerData)) {
         if (key !== 'username' && wantedStats.includes(key)) {
-            ths.push(<th class="cellValue">{key}</th>);
+            ths.push(<th className="cellValue">{key}</th>);
         };
     };
     return (
@@ -50,11 +51,11 @@ const tbodyBuilder = (playersData, wantedStats) => {
 
 const trBuilderForTableBody = (dataObj, index, wantedStats) => {
     const tds = [];
-    tds.push(<td class="placement">{index+1}</td>);
-    tds.push(<td class="gamerTag">{dataObj.username}</td>);
+    tds.push(<td className="placement">{index+1}</td>);
+    tds.push(<td className="gamerTag">{dataObj.username}</td>);
     for (const [key, value] of Object.entries(dataObj)) {
         if (key !== 'username' && wantedStats.includes(key)) {
-            tds.push(<td class="cellValue">{value}</td>);
+            tds.push(<td className="cellValue">{Number.isInteger(value) ? value : value.toFixed(2)}</td>);
         };
     };
     return (

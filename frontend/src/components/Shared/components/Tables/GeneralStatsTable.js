@@ -4,6 +4,8 @@ import GeneralStatDiv from './GeneralStatDiv';
 import Card from '../UI/Card';
 
 const GeneralStatsTable = props => {
+    /* Grid table which contains stats div's with general stats of the player */
+    // The states will received in javascript object form [Hash table].
     const stats = [];
     for (const [key, value] of Object.entries(props.data)) {
         stats.push(<GeneralStatDiv key={key} header={key} value={value}></GeneralStatDiv>);

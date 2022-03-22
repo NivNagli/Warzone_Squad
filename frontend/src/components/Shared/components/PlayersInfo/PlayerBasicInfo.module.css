@@ -11,3 +11,7 @@
   font-weight: 700;
   white-space: nowrap;
 }
+
+.player_name::first-letter {
+  text-transform: capitalize;
+}

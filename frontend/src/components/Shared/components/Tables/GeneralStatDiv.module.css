@@ -12,11 +12,10 @@
   
   .stat__header{
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 700;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    font-style: oblique;
   }
   
   .stat__value{
@@ -44,7 +43,6 @@
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
-      font-style: oblique;
     }
     
     .stat__value{
@@ -73,7 +71,6 @@
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
-      font-style: oblique;
     }
     
     .stat__value{
