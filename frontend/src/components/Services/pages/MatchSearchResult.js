@@ -20,6 +20,7 @@ const MatchSearchResult = props => {
     }, [matchFlag])
 
     useEffect(() => {
+        // Scroll to the top of the page.
         window.scrollTo(0, 0)
       }, [])
 
@@ -27,6 +28,7 @@ const MatchSearchResult = props => {
         return <Redirect to='/' />
     }
     const getMatchData = async () => {
+        // Async function that will responsible for loading the match data from the server.
         try {
             const reqData = await matchSearchAttempt(location.state.matchID, sendRequest);
             if (reqData) {
@@ -51,6 +53,7 @@ const MatchSearchResult = props => {
         return <div></div>;
     }
     else {
+        // The case we found the match data and now we will display each team in separate table.
         const teams = [];
         matchData.data.matchStats.forEach((dataObj, index) => {
             teams.push(<TeamTable tableHeader={dataObj[0].teamPlacement} key={index} playersData={dataObj} wantedStats={["kills", "kdRatio", "deaths", "damageDone", "damageTaken"]}></TeamTable>)

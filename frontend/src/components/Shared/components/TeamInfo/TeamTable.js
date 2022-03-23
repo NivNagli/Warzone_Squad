@@ -2,7 +2,12 @@ import React from 'react';
 import './TeamTable.css';
 
 const TeamTable = props => {
+    /* This component will receive array that each object inside him contain list of players data objects
+     * also we will receive and array with the 'wantedStats' that we want to display for each player */
+
+    // The first line of the table, will contain the headers of the stats the we want to display for each player 
     const tableHead = theadBuilder(props.playersData[0], props.wantedStats);
+    // The body of the table, each row will contain some player stats.
     const tableBody = tbodyBuilder(props.playersData, props.wantedStats);
     return (
         <div className="teamTable">

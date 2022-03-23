@@ -11,6 +11,7 @@ import ErrorMessage from '../../Shared/components/UI/ErrorMessage';
 // custom and built-in hooks imports:
 import { useHttpClient } from '../../Shared/hooks/http-hook';
 import {playerSearchAttempt} from '../../../Middlewares/backend-requests'; 
+import WarningMessage from '../../Shared/components/UI/WarningMessage';
 
 // The component:
 const PlayerSearch = () => {
@@ -54,7 +55,8 @@ const PlayerSearch = () => {
 
     return (
         <React.Fragment>
-            {error && <ErrorMessage error={error} />}
+            {isLoading && <WarningMessage msg={"The operation for the first time takes a little longer, And that's so in the next time the search will be faster."}></WarningMessage>}
+            {(!isLoading && error) && <ErrorMessage error={error} />}
             <form className={classes.search_form} onSubmit={searchSubmitHandler}>
                 {isLoading && <LoadingSpinner asOverlay />}
                 
