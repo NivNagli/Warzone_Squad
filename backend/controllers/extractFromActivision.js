@@ -51,7 +51,7 @@ exports.getLastGamesArrayAndSummary = async (req, res, next) => {
     catch (error) {
         console.log("Player Last Games Array Extract Failed!");
         let errorCode = 500;
-        if(error.response) {
+        if (error.response) {
             errorCode = error.response.status;
         }
         const description = "Last Games Array Extract 'get' Request Failed";
@@ -81,7 +81,7 @@ exports.getLifetimeAndWeeklyStats = async (req, res, next) => {
     catch (error) {
         console.log("Player Lifetime & Weekly Stats Extract Failed!");
         let errorCode = 500;
-        if(error.response) {
+        if (error.response) {
             errorCode = error.response.status;
         }
         const description = "Lifetime & Weekly Stats Extract 'get' Request Failed";
@@ -124,7 +124,7 @@ exports.getGameStatsById = async (req, res, next) => {
     catch (error) {
         console.log("Players Array From Specific Game Extract by ID Failed!");
         let errorCode = 500;
-        if(error.response) {
+        if (error.response) {
             errorCode = error.response.status;
         }
         const description = "Players Array From Specific Game Extract by ID 'get' Request Failed";
@@ -169,6 +169,9 @@ exports.getLastGamesArrayByCycle = async (req, res, next) => {
         };
     };
     let lastGameDate;
+    // I create the 2 'reTry' variables because the public API from activision sometime collapse, so in order to avoid from the user to re search we re try to send another request to api.
+    let reTryForTheInitSearch = 5;
+    let reTryForTheAdvancedSearch = 2;
     while (cycle > 0) {
         if (cycle === parseInt(req.params.cycles)) {
             try {
@@ -178,7 +181,7 @@ exports.getLastGamesArrayByCycle = async (req, res, next) => {
                     const lastGamesStatsAfterFilter = extractHandler.arrangeLastGamesStatsWithoutSummaries(response);
                     gamesArray.push(...lastGamesStatsAfterFilter);
                     lastGameDate = gamesArray[gamesArray.length - 1].gameDate;
-                    cycle --;
+                    cycle--;
                 }
                 catch (err) {
                     console.log("Player Last Games Array Filter Protocol Failed! at 'getLastGamesArrayByCycle'.");
@@ -191,15 +194,20 @@ exports.getLastGamesArrayByCycle = async (req, res, next) => {
             }
 
             catch (error) {
-                console.log("Player Last Games Array Extract Failed! at 'getLastGamesArrayByCycle'.");
-                let errorCode = 500;
-                if(error.response) {
-                    errorCode = error.response.status;
+                if (reTryForTheInitSearch--) {
+                    console.log(`Init search num ${reTryForTheInitSearch + 1} for 'getLastGamesArrayByCycle failed, we try again.'`)
                 }
-                const description = "Last Games Array Extract 'get' Request Failed";
-                const possibleCause = "Invalid username / platform || private account ||  Possible malfunction in the pull service";
-                res.status(errorCode).json(errorDescriptionBuilder(errorCode, description, possibleCause));
-                return;
+                else {
+                    console.log("Player Last Games Array Extract Failed! at 'getLastGamesArrayByCycle'.");
+                    let errorCode = 500;
+                    if (error.response) {
+                        errorCode = error.response.status;
+                    }
+                    const description = "Last Games Array Extract 'get' Request Failed";
+                    const possibleCause = "Invalid username / platform || private account ||  Possible malfunction in the pull service";
+                    res.status(errorCode).json(errorDescriptionBuilder(errorCode, description, possibleCause));
+                    return;
+                }
             }
         }
         else {
@@ -211,7 +219,8 @@ exports.getLastGamesArrayByCycle = async (req, res, next) => {
                     const lastGamesStatsAfterFilter = extractHandler.arrangeLastGamesStatsWithoutSummaries(response);
                     gamesArray.push(...lastGamesStatsAfterFilter);
                     lastGameDate = gamesArray[gamesArray.length - 1].gameDate;
-                    cycle --;
+                    cycle--;
+                    reTryForTheAdvancedSearch++;
                 }
                 catch (err) {
                     console.log("Player Last Games Array Filter Protocol Failed! at 'getLastGamesArrayByCycle'.");
@@ -224,20 +233,29 @@ exports.getLastGamesArrayByCycle = async (req, res, next) => {
             }
 
             catch (error) {
-                console.log("Player Last Games Array Extract Failed! at 'getLastGamesArrayByCycle'.");
-                let errorCode = 500;
-                if(error.response) {
-                    errorCode = error.response.status;
+                if (reTryForTheAdvancedSearch--) {
+                    console.log(`Advanced search num ${reTryForTheAdvancedSearch + 1} for 'getLastGamesArrayByCycle failed, we try again.'`)
                 }
-                const description = "Last Games Array Extract 'get' Request Failed";
-                const possibleCause = "Invalid username / platform || private account ||  Possible malfunction in the pull service";
-                res.status(errorCode).json(errorDescriptionBuilder(errorCode, description, possibleCause));
-                return;
+                else {
+                    // TODO: Aggressive patch for handling error that cause from the activision api, in case of weird errors that can be the root of them.
+                    console.log("Aggressive patch execute, need to check for possible trailing errors!");
+                    res.status(200).json({ data: { "gamesArray": gamesArray } });
+                    return;
+                    console.log("Player Last Games Array Extract Failed! at 'getLastGamesArrayByCycle'.");
+                    let errorCode = 500;
+                    if (error.response) {
+                        errorCode = error.response.status;
+                    }
+                    const description = "Last Games Array Extract 'get' Request Failed";
+                    const possibleCause = "Invalid username / platform || private account ||  Possible malfunction in the pull service";
+                    res.status(errorCode).json(errorDescriptionBuilder(errorCode, description, possibleCause));
+                    return;
+                }
             }
         }
     }
     /* Success case: where we were able to complete all the cycles for the data extractions. */
-    res.status(200).json({ data: {"gamesArray" : gamesArray} });
+    res.status(200).json({ data: { "gamesArray": gamesArray } });
     return;
 };
 
