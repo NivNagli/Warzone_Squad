@@ -45,6 +45,14 @@ exports.getGameProfile = async (req, res, next) => {
             playerDataRequestBarrier.push(axios(configForLast100GamesStats));
             playerDataRequestBarrier.push(axios(configForLifetimeAndWeeklyStats));
             const playerStats = await Promise.all(playerDataRequestBarrier);
+
+            const userExists = await WarzoneUser.findOne({ username: username, platform: platform });
+            if(userExists) {
+                /* I made this second check because the create operation take some time
+                 * and we don't want to create duplicate profiles so i made this second check. */
+                return res.status(200).json({ lastGamesStats: userExists.lastGamesStats, generalStats: userExists.generalStats, profileID : userExists.id});
+            }
+
             const last100GamesStatsArray = playerStats[0].data.data.gamesArray;
             const lifetimeAndWeeklyStats = playerStats[1].data.data;
             description = "Failed attempt to save the data in the database";
