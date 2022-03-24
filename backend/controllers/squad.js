@@ -48,6 +48,7 @@ exports.getSquad = async (req, res, next) => {
                     squadID: existingSquad.id, playersSharedGamesStats: existingSquad.playersSharedGamesStats,
                     sharedGamesGeneralStats: existingSquad.sharedGamesGeneralStats, allTimePlayersStats: allTimeGamesStats
                 });
+            return;
         }
         else {
             // The case we dont have this squad in the database,
