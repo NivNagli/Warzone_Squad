@@ -16,6 +16,7 @@ import ComparePlayersPage from './components/Services/pages/CompareSearch';
 import HomePage from './components/Services/pages/homePage';
 import PlayerSearchResultPage from './components/Services/pages/PlayerSearchResult';
 import MatchSearchResultPage from './components/Services/pages/MatchSearchResult';
+import CompareResultPage from './components/Services/pages/CompareResult';
 
 import './App.css';
 
@@ -42,6 +43,9 @@ function App() {
         </Route>
         <Route path="/matchSearch/:matchID/" exact>
           <MatchSearchResultPage/>
+        </Route>
+        <Route path="/playersCompare/:players/" exact>
+          <CompareResultPage/>
         </Route>
         <Route path="/" exact>
           <HomePage />
