@@ -52,10 +52,11 @@ const fixBattleUsernames = (usernames, platforms) => {
 
 export const playersCompareAttempt = async (usernames, platforms, sendRequest) => {
     try {
-        fixBattleUsernames(usernames, platforms);
+        const usernamesCopy = [...usernames]; // In order not to effect the original users array. 
+        fixBattleUsernames(usernamesCopy, platforms);
         const url = `${API_PREFIX}/squad/compare`;
         const reqBody = {
-            usernames : usernames,
+            usernames : usernamesCopy,
             platforms : platforms
         };
         const responseData = await sendRequest(
