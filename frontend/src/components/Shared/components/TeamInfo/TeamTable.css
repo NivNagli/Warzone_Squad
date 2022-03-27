@@ -91,11 +91,14 @@
   }
 
   .table__h3{
-    font-size: 0.6rem;
-    text-align: center;
+    font-size: 1rem;
+    display: inline-block; 
+    text-align: left;
+    margin-left:1rem;
+    color : #BAC3CF;
   }
 
-  @media (max-width: 750px) {
+  @media (max-width: 525px) {
     .table__header {
         /* background-color: #4a81ff; */
         color: rgb(255, 255, 255);
@@ -114,8 +117,10 @@
         height: 60%;
       }
       .table__h3{
-        font-size: 0.6rem;
-        text-align: center;
+        font-size: 0.85rem;
+        /* text-align: center; */
+        margin-left: 0;
+        color : #BAC3CF;
       }
   }
   
