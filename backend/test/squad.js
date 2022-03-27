@@ -17,7 +17,7 @@ describe('Squad Controller: Make sure we dont have that squad in the database be
         }
     };
 
-    it('should return status 201 for "getSquad" method, in case that failed check if the squad already exists in the database.', (done) => {
+    it('should return status 201 for "createSquad" method, in case that failed check if the squad already exists in the database.', (done) => {
         const res = {
             statusCode: 0,
             userStatus: null,
@@ -30,7 +30,7 @@ describe('Squad Controller: Make sure we dont have that squad in the database be
                 this.data = data;
             }
         };
-        squadController.getSquad(goodUserReq, res, () => { }).then(() => {
+        squadController.createSquad(goodUserReq, res, () => { }).then(() => {
             expect(res.statusCode).to.be.equal(201);
             tempSquadID = res.data.squadID;
             done();

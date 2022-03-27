@@ -8,7 +8,7 @@ const squadUtils = require('../controllersUtils/squadUtils');
 /* This method will search for existing squad that includes the same players and if we do not find one, 
  * We will create a new one and after both cases we will return the squad shared and not shared stats.
  */
-exports.getSquad = async (req, res, next) => {
+exports.createSquad = async (req, res, next) => {
     /* First we will check if we received errors from the route with the help of express-validator third party package */
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -46,7 +46,8 @@ exports.getSquad = async (req, res, next) => {
             res.status(200).json(
                 {
                     squadID: existingSquad.id, playersSharedGamesStats: existingSquad.playersSharedGamesStats,
-                    sharedGamesGeneralStats: existingSquad.sharedGamesGeneralStats, allTimePlayersStats: allTimeGamesStats
+                    sharedGamesGeneralStats: existingSquad.sharedGamesGeneralStats, allTimePlayersStats: allTimeGamesStats,
+                    dateCreated : existingSquad.dateCreated
                 });
             return;
         }
@@ -59,7 +60,8 @@ exports.getSquad = async (req, res, next) => {
                 playersSharedGamesStats: sharedGamesStats.playersSharedGamesStats,
                 sharedGamesGeneralStats: sharedGamesStats.squadSharedGamesStats,
                 lastTimeUpdated: new Date().getTime(),
-                usernames: usernames, platforms: platforms
+                usernames: usernames, platforms: platforms,
+                dateCreated: new Date().toISOString().split('T')[0]
             });
             await newSquad.save();
             res.status(201).json(
@@ -129,7 +131,7 @@ const playerConfigBuilder = (username, platform) => {
 /* ================================================================================================================================================= */
 
 /*
- * This method is almost identical to the 'getSquad' method, except that this time if the squad does not exist in the database after we create
+ * This method is almost identical to the 'createSquad' method, except that this time if the squad does not exist in the database after we create
  * the shared games stats we will return them directly instead of using them to create a new squad in the database.
  */
 exports.comparePlayers = async (req, res, next) => {
@@ -170,7 +172,8 @@ exports.comparePlayers = async (req, res, next) => {
             res.status(200).json(
                 {
                     playersSharedGamesStats: existingSquad.playersSharedGamesStats,
-                    sharedGamesGeneralStats: existingSquad.sharedGamesGeneralStats, allTimePlayersStats: allTimeGamesStats
+                    sharedGamesGeneralStats: existingSquad.sharedGamesGeneralStats, allTimePlayersStats: allTimeGamesStats,
+                    dateCreated : existingSquad.dateCreated
                 });
         }
         else {

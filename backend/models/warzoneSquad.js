@@ -38,6 +38,11 @@ const squadSchema = new Schema({
     lastTimeUpdated : {
         type : Number,
         required: true
+    },
+
+    dateCreated : {
+        type : String,
+        required : true
     }
 });
 

@@ -16,7 +16,7 @@ router.post(
         .isEmpty()
     ],
 
-    squadController.getSquad
+    squadController.createSquad
 );
 
 router.post(
