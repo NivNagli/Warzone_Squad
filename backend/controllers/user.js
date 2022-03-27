@@ -83,7 +83,7 @@ exports.signup = async (req, res, next) => {
             });
             await createdUser.save();
             const token = jwt.sign(
-                { userID: createdUser.id, email: createdUser.email },
+                { userID: createdUser.id, email: createdUser.email, gameProfileID: newGameProfileID },
                 process.env.JWT_SECRET,
                 { expiresIn: '2h' }
             );
@@ -115,7 +115,7 @@ exports.signup = async (req, res, next) => {
             });
             await createdUser.save();
             const token = jwt.sign(
-                { userID: createdUser.id, email: createdUser.email },
+                { userID: createdUser.id, email: createdUser.email, gameProfileID: existingProfile.id },
                 process.env.JWT_SECRET,
                 { expiresIn: '2h' }
             );

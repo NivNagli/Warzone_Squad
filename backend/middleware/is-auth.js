@@ -7,16 +7,15 @@ const jwt = require('jsonwebtoken');
 const HttpError = require('../models/http-error');
 
 module.exports = (req, res, next) => {
-    // if (req.method === 'OPTIONS') {
-    //     return next();
-    // }
     try {
-        const token = req.headers.authorization.split(' ')[1]; // Authorization: 'Bearer TOKEN'
+        // First we try to read the jwt token from the header
+        const token = req.headers.authorization.split(' ')[1]; // Authorization: 'Bearer TOKEN_HASH'
         if (!token) {
-            throw new Error('Authentication failed!');
+          throw new Error('Authentication faileddd!');
         }
-        const decodedToken = jwt.verify(token, 'supersecret_dont_share');
-        req.userData = { userId: decodedToken.userId };
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+
+        req.userData = { userId: decodedToken.userID, gameProfileID: decodedToken.gameProfileID};
         next();
     } catch (err) {
         const error = new HttpError('Authentication failed!', 403);
