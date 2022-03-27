@@ -2,7 +2,6 @@
   margin-right: 20px;
   background-color: #e74c3c;
   border: none;
-  font-family: "Poppins";
   padding: 10px 0;
   font-size: 15px;
   border-radius: 10px;
@@ -28,7 +27,6 @@
 .button:active:disabled {
   margin-right: 20px;
   border: none;
-  font-family: "Poppins";
   padding: 10px 0;
   font-size: 15px;
   border-radius: 10px;

@@ -43,6 +43,14 @@
   transition: 0.3s;
 }
 
+.footer ul,
+.footer p {
+  float: none;
+  margin: auto;
+  width: 100%;
+  text-align: center;
+}
+
 .footer ul li a i:hover {
   color: #fff;
   background-color: #3b5998;

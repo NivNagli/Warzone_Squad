@@ -38,7 +38,6 @@ color: rgba(255, 255, 255, 0.5);
     margin-right: 20px;
     background-color: rgba(21, 226, 107, 0.877);
     border: none;
-    font-family: "Poppins";
     padding: 0.625rem 0;
     font-size: 1rem;
     border-radius: 0.625rem;
@@ -67,10 +66,9 @@ color: rgba(255, 255, 255, 0.5);
         display: flex;
       }
       .nav_buttons .button{
-        margin-right: 20px;
+        margin-right: 5px;
         background-color: rgba(21, 226, 107, 0.877);
         border: none;
-        font-family: "Poppins";
         padding: 0.625rem 0;
         font-size: 1rem;
         border-radius: 0.625rem;
@@ -80,11 +78,11 @@ color: rgba(255, 255, 255, 0.5);
       }
   }
 
-  @media (max-width: 426px) {  
+  @media (max-width: 367px) {  
     .nav__link {
       text-decoration: none;
       color: rgb(255, 255, 255);
-      font-size: 0.8rem;
+      font-size: 0.9rem;
       }
     .nav_list {
         list-style: none;
@@ -93,10 +91,9 @@ color: rgba(255, 255, 255, 0.5);
       .nav_buttons .button{
         background-color: rgba(21, 226, 107, 0.877);
         border: none;
-        font-family: "Poppins";
         font-size: 0.7rem;
         border-radius: 0.8rem;
-        min-width: 2.2rem;
+        min-width: 3rem;
 
         height: auto;
       }

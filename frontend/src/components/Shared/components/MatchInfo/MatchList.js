@@ -39,24 +39,24 @@ const MatchList = props => {
         // The case we didn't get the number of matches that need to be displayed.
         if (props.matches.length > 20) {
             for (let i = 0; i < 20; i++) {
-                matches.push(<MatchBasicDiv onSearch={searchSubmitHandler} data={props.matches[i]} key={props.matches[i].matchID}></MatchBasicDiv>);
+                matches.push(<MatchBasicDiv teamView={props.teamView} onSearch={searchSubmitHandler} data={props.matches[i]} key={props.matches[i].matchID}></MatchBasicDiv>);
             }
         }
         else {
             for (let i = 0; i < props.matches.length; i++) {
-                matches.push(<MatchBasicDiv onSearch={searchSubmitHandler} data={props.matches[i]} key={props.matches[i].matchID}></MatchBasicDiv>);
+                matches.push(<MatchBasicDiv  teamView={props.teamView} onSearch={searchSubmitHandler} data={props.matches[i]} key={props.matches[i].matchID}></MatchBasicDiv>);
             }
         }
     }
     else {
         if (props.numOfMatches > props.matches.length) {
             for (let i = 0; i < props.matches.length; i++) {
-                matches.push(<MatchBasicDiv onSearch={searchSubmitHandler} data={props.matches[i]} key={props.matches[i].matchID}></MatchBasicDiv>);
+                matches.push(<MatchBasicDiv teamView={props.teamView} onSearch={searchSubmitHandler} data={props.matches[i]} key={props.matches[i].matchID}></MatchBasicDiv>);
             }
         }
         else {
             for (let i = 0; i < props.numOfMatches; i++) {
-                matches.push(<MatchBasicDiv onSearch={searchSubmitHandler} data={props.matches[i]} key={props.matches[i].matchID}></MatchBasicDiv>);
+                matches.push(<MatchBasicDiv teamView={props.teamView} onSearch={searchSubmitHandler} data={props.matches[i]} key={props.matches[i].matchID}></MatchBasicDiv>);
             }
         }
 
@@ -65,7 +65,7 @@ const MatchList = props => {
         <div className={classes.match__list}>
             {isLoading && <LoadingSpinner asOverlay />}
             {error && <ErrorMessage error={error} />}
-            <h2 className={classes.match_list_h2}> Last Games: </h2>
+            <h2 className={classes.match_list_h2}> {props.matchListHeader} </h2>
             {matches}
         </div>
     );

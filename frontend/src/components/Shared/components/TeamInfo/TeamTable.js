@@ -1,5 +1,6 @@
 import React from 'react';
 import './TeamTable.css';
+import shortid from 'shortid';
 
 const TeamTable = props => {
     /* This component will receive array that each object inside him contain list of players data objects
@@ -12,7 +13,9 @@ const TeamTable = props => {
     return (
         <div className="teamTable">
             <header className="table__header">
-                <h1 className="table__h1">Placement: {props.tableHeader}</h1>
+                <h1 className="table__h1">{props.tableHeader}</h1>
+                {props.tableSubHeader && <h3 className="table__h3">{props.tableSubHeader}</h3>}
+                
             </header>
             <table>
                 {tableHead}
@@ -26,11 +29,11 @@ export default TeamTable;
 
 const theadBuilder = (playerData, wantedStats) => {
     const ths = [];
-    ths.push(<th className="placement"></th>);
-    ths.push(<th className="gamerTag">Username</th>);
+    ths.push(<th key={shortid.generate()} className="placement"></th>);
+    ths.push(<th key={shortid.generate()} className="gamerTag">Username</th>);
     for (const [key, value] of Object.entries(playerData)) {
         if (key !== 'username' && wantedStats.includes(key)) {
-            ths.push(<th className="cellValue">{key}</th>);
+            ths.push(<th key={shortid.generate()} className="cellValue">{key}</th>);
         };
     };
     return (
@@ -56,18 +59,17 @@ const tbodyBuilder = (playersData, wantedStats) => {
 
 const trBuilderForTableBody = (dataObj, index, wantedStats) => {
     const tds = [];
-    tds.push(<td className="placement">{index+1}</td>);
-    tds.push(<td className="gamerTag">{dataObj.username}</td>);
+    tds.push(<td key={shortid.generate()} className="placement">{index+1}</td>);
+    tds.push(<td key={shortid.generate()} className="gamerTag">{dataObj.username}</td>);
     for (const [key, value] of Object.entries(dataObj)) {
         if (key !== 'username' && wantedStats.includes(key)) {
-            tds.push(<td className="cellValue">{Number.isInteger(value) ? value : value.toFixed(2)}</td>);
+            tds.push(<td key={shortid.generate()} className="cellValue">{Number.isInteger(value) ? value : value.toFixed(2)}</td>);
         };
     };
     return (
-        <tr>
+        <tr key={shortid.generate()}>
             {tds}
         </tr>
     );
 };
-
 

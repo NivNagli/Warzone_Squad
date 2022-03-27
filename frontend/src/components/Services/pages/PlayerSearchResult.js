@@ -7,6 +7,7 @@ import GeneralStatsTable from '../../Shared/components/Tables/GeneralStatsTable'
 import PlayerBasicInfo from '../../Shared/components/PlayersInfo/PlayerBasicInfo';
 import { lifeTimeFilter, allWeeklyFilter } from '../../Shared/util/dataFilters';
 import MatchList from '../../Shared/components/MatchInfo/MatchList';
+import BenefitMessage from '../../Shared/components/UI/BenefitMessage';
 
 const PlayerSearchResult = (props) => {
     let userDataFound; // Flag that will help to determine when the user data is loaded.
@@ -63,9 +64,10 @@ const PlayerSearchResult = (props) => {
             return (
                 <React.Fragment>
                     <PlayerBasicInfo name={location.state.username}></PlayerBasicInfo>
+                    <BenefitMessage title={' Registered Users:'} message={'Can look at the history of the last 100 games instead of 20!'} subMessage={"The data is available on your 'Profile' page"}></BenefitMessage>
                     <GeneralStatsTable header={"Lifetime Stats"} data={filteredLifetimeStats}></GeneralStatsTable>
                     <GeneralStatsTable header={"Weekly Stats"} data={filteredWeeklyStats}></GeneralStatsTable>
-                    <MatchList matches={userData.data.lastGamesStats} numOfMatches={20}></MatchList>
+                    <MatchList matchListHeader={"Last Games:"} matches={userData.data.lastGamesStats} numOfMatches={20}></MatchList>
                 </React.Fragment>
             );
         }
@@ -75,7 +77,7 @@ const PlayerSearchResult = (props) => {
                 <React.Fragment>
                     <PlayerBasicInfo name={location.state.username}></PlayerBasicInfo>
                     <GeneralStatsTable header={"Lifetime Stats"} data={filteredLifetimeStats}></GeneralStatsTable>
-                    <MatchList matches={userData.data.lastGamesStats} numOfMatches={20}></MatchList>
+                    <MatchList matchListHeader={"Last Games:"} matches={userData.data.lastGamesStats} numOfMatches={20}></MatchList>
                 </React.Fragment>
             );
         }
