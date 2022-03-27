@@ -8,12 +8,15 @@ import Button from '../../Shared/components/Button/Button';
 import OptionSelector from '../../Shared/components/Input/OptionSelector';
 import LoadingSpinner from '../../Shared/components/UI/LoadingSpinner';
 import ErrorMessage from '../../Shared/components/UI/ErrorMessage';
+import WarningMessage from '../../Shared/components/UI/WarningMessage';
 
 // custom and built-in hooks imports:
 import { useHttpClient } from '../../Shared/hooks/http-hook';
-import {playersCompareAttempt} from '../../../Middlewares/backend-requests';
+import { playersCompareAttempt } from '../../../Middlewares/backend-requests';
 
 const CompareSearch = () => {
+
+    /* 4 potential users states for the search field results */
     const [enteredPlatformUser1, setEnteredPlatformUser1] = useState('psn');
     const [enteredUsernameUser1, setEnteredUsernameUser1] = useState('');
     const onChangeSearchFieldsUser1 = (inputs) => {
@@ -41,21 +44,21 @@ const CompareSearch = () => {
         setEnteredPlatformUser4((inputs.platform));
         setEnteredUsernameUser4(inputs.username);
     };
-    /* 4 potential users states for the search field results */
     // =================================================================
 
     const [whileSearch, setWhileSearch] = useState(false); // This state will prevent spamming from the user while searching
     let history = useHistory();
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
-    useEffect(() => { }, [error]);
+    useEffect(() => { }, [error]);  // Render the component each time the error is changed.
 
     // options values for number of players select component.
     const optionsValues = [2, 3, 4];
     const optionsDescriptions = ["2 Players", "3 Players", "4 Players"];
 
     /* State that will hold the number of players select and afterwards a function who will responsible for update this state */
-    const [enteredNumberOfPlayers, setEnteredNumberOfPlayers] = useState(2);
+    const [enteredNumberOfPlayers, setEnteredNumberOfPlayers] = useState(2);  // init for 2 players as default.
     const selectChanged = (val) => {
+        // The method that will be called when the user select new number of players.
         setEnteredNumberOfPlayers(val.target.value);
     };
 
@@ -79,35 +82,35 @@ const CompareSearch = () => {
 
     }, [enteredNumberOfPlayers, enteredUsernameUser1, enteredUsernameUser2, enteredUsernameUser3, enteredUsernameUser4]);
 
-    const placeSubmitHandler = async event => { // TODO: In the future we should send req here.
+    const placeSubmitHandler = async event => {
+        /* This is the method that will be called when the user click the submit button for the comparison */
         event.preventDefault();
         setWhileSearch(true); // Will set the search button into disabled
         let userFound = false;
-        console.log("Will need to send http request here to the server and afterwards to re render the result with the History Hook");
-        console.log(`Info By users : [1] : ${enteredUsernameUser1} ${enteredPlatformUser1} [2] : ${enteredUsernameUser2} ${enteredPlatformUser2} 
-        [3] : ${enteredUsernameUser3} ${enteredPlatformUser3} [4] : ${enteredUsernameUser4} ${enteredPlatformUser4}`);
 
         try {
+            // Making the inputs arrays, using the slice method to get only the submitted inputs.
             const usernames = [enteredUsernameUser1, enteredUsernameUser2, enteredUsernameUser3, enteredUsernameUser4].slice(0, enteredNumberOfPlayers);
             const platforms = [enteredPlatformUser1, enteredPlatformUser2, enteredPlatformUser3, enteredPlatformUser4].slice(0, enteredNumberOfPlayers);
+            // Send the request to the server.
             const reqData = await playersCompareAttempt(usernames, platforms, sendRequest);
-            console.log(reqData); // TODO: Delete this print while finalizing.
-            if(reqData) {
+            if (reqData) {
+                // The case of successful request.
                 userFound = true;
-                userFound = 
                 clearError();
                 setWhileSearch(false);
-                console.log(reqData);
-                // history.push({
-                //     pathname:`/playerSearch/${enteredUsername}/${enteredPlatform}`,
-                //     state : {username : enteredUsername, platform : enteredPlatform}
-                // });
+                // redirect to the result page, with the inputs parameters. 
+                history.push({
+                    pathname: `/playersCompare/${usernames.join('_')}`,
+                    state: { usernames: usernames, platforms: platforms }
+                });
             }
         }
         catch (e) {
+            // The case of unsuccessful request, the 'error' variable from the useHttpClient will help us to display the error.
             console.log(`Some unknown error occurred in search page, err = ${e}`);
         }
-        if(!userFound) {
+        if (!userFound) {
             setWhileSearch(false);
         };
 
@@ -121,7 +124,8 @@ const CompareSearch = () => {
     ]
     return (
         <React.Fragment>
-            {error && <ErrorMessage error={error} />}
+            {isLoading && <WarningMessage msg={"The operation for the first time takes a little longer, And that's so in the next time the search will be faster."}></WarningMessage>}
+            {(!isLoading && error) && <ErrorMessage error={error} />}
             <form className={classes.compare_form} onSubmit={placeSubmitHandler}>
                 {isLoading && <LoadingSpinner asOverlay />}
 

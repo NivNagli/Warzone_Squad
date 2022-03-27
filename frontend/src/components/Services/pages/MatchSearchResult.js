@@ -32,6 +32,7 @@ const MatchSearchResult = props => {
         try {
             const reqData = await matchSearchAttempt(location.state.matchID, sendRequest);
             if (reqData) {
+                // The case of successful request.
                 clearError();
                 setData(reqData);
                 return 1;
@@ -50,13 +51,14 @@ const MatchSearchResult = props => {
         }
     }
     if (!matchData) {
+        // The case the request did not done yet.
         return <div></div>;
     }
     else {
         // The case we found the match data and now we will display each team in separate table.
         const teams = [];
         matchData.data.matchStats.forEach((dataObj, index) => {
-            teams.push(<TeamTable tableHeader={dataObj[0].teamPlacement} key={index} playersData={dataObj} wantedStats={["kills", "kdRatio", "deaths", "damageDone", "damageTaken"]}></TeamTable>)
+            teams.push(<TeamTable tableHeader={`Placement: ${dataObj[0].teamPlacement}`} key={index} playersData={dataObj} wantedStats={["kills", "kdRatio", "deaths", "damageDone", "damageTaken"]}></TeamTable>)
         });
         return (
             <React.Fragment>

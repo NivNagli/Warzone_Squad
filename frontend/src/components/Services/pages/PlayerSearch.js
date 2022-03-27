@@ -29,12 +29,14 @@ const PlayerSearch = () => {
     useEffect(() => { }, [error]);
 
     const searchSubmitHandler = async event => {
+        // The method which will be called when the form is submitted.
         event.preventDefault();
         setWhileSearch(true); // Will set the search button into disabled
         let userFound = false;
         try {
             const reqData = await playerSearchAttempt(enteredUsername, enteredPlatform, sendRequest);
             if(reqData) {
+                // The case of successful request.
                 userFound = true;
                 clearError();
                 setWhileSearch(false);
@@ -45,6 +47,7 @@ const PlayerSearch = () => {
             }
         }
         catch (e) {
+            // The 'error' variable will display in this case, yet i still printed the error from the server.
             console.log(`Some unknown error occurred in search page, err = ${e}`);
         }
         if(!userFound) {
