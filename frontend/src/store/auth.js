@@ -33,12 +33,14 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.userID = action.payload.userID;
       state.gameProfileID = action.payload.gameProfileID;
+      state.token = action.payload.token;
     },
     logout(state) {
       localStorage.clear();
       state.isAuthenticated = false;
       state.userID = null;
       state.gameProfileID = null;
+      state.token = null;
     },
   },
 });
