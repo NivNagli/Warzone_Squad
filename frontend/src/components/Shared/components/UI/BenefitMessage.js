@@ -12,6 +12,3 @@ const BenefitMessage = props => {
 };
 
 export default BenefitMessage;
-
-// to keep teams in the site system, which we take care of monitoring their information from the day they were created and therefore the information is based beyond the last 100 games
-// &#9888; For registered users only
