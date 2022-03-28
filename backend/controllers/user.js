@@ -347,11 +347,12 @@ exports.getUserData = async (req, res, next) => {
                 let squadSummary = getSquadSummaryStats(squadObj);
                 if (squadSummary) {
                     // The case the squad have shared stats.
+                    squadSummary['SquadName'] = currentUser.squads[i].squadName;
                     squadList.push(squadSummary);
                 }
                 else {
                     // Some squads does not have shared games stats because they did not play together since they registered in the website
-                    squadList.push({ usernames: squadObj.usernames, platforms: squadObj.platforms });
+                    squadList.push({ usernames: squadObj.usernames, platforms: squadObj.platforms, squadName: currentUser.squads[i].squadName});
                 }
             }
         }
