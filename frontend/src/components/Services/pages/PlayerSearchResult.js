@@ -52,11 +52,13 @@ const PlayerSearchResult = (props) => {
     }
     else {
         // First we will filter the information first the 'all time' information and then the 'weekly' in case he exists.
-        const filteredLifetimeStats = lifeTimeFilter(userData.data.generalStats.br_lifetime_data);
+        const lifetimeDataByOrder = (({ kdRatio, kills, deaths, scorePerMinute,timePlayed,gamesPlayed,wins,downs,revives,topTwentyFive,topTen,topFive }) => ({ kdRatio, kills, deaths, scorePerMinute,timePlayed,gamesPlayed,wins,downs,revives,topTwentyFive,topTen,topFive }))(userData.data.generalStats.br_lifetime_data);
+        const filteredLifetimeStats = lifeTimeFilter(lifetimeDataByOrder);
         let filteredWeeklyStats;
         if (userData.data.generalStats.weeklyStats) {
             if (userData.data.generalStats.weeklyStats.all) {
-                filteredWeeklyStats = allWeeklyFilter(userData.data.generalStats.weeklyStats.all);
+                const weeklyDataByOrder = (({ kdRatio, kills, deaths, scorePerMinute,timePlayed,matchesPlayed,killsPerGame,assists,damageDone,damageTaken,distanceTraveled,avgLifeTime }) => ({ kdRatio, kills, deaths, scorePerMinute,timePlayed,matchesPlayed,killsPerGame,assists,damageDone,damageTaken,distanceTraveled,avgLifeTime }))(userData.data.generalStats.weeklyStats.all);
+                filteredWeeklyStats = allWeeklyFilter(weeklyDataByOrder);
             }
         }
         if (filteredWeeklyStats) {
@@ -64,7 +66,7 @@ const PlayerSearchResult = (props) => {
             return (
                 <React.Fragment>
                     <PlayerBasicInfo name={location.state.username}></PlayerBasicInfo>
-                    <BenefitMessage title={' Registered Users:'} message={'Can look at the history of the last 100 games instead of 20!'} subMessage={"The data is available on your 'Profile' page"}></BenefitMessage>
+                    <BenefitMessage title={' Registered Users:'} message={'Can look at the history of their last 100 games instead of 20!'} subMessage={"The data is available on your 'Profile' page"}></BenefitMessage>
                     <GeneralStatsTable header={"Lifetime Stats"} data={filteredLifetimeStats}></GeneralStatsTable>
                     <GeneralStatsTable header={"Weekly Stats"} data={filteredWeeklyStats}></GeneralStatsTable>
                     <MatchList matchListHeader={"Last Games:"} matches={userData.data.lastGamesStats} numOfMatches={20}></MatchList>
