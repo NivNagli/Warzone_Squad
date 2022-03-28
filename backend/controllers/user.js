@@ -5,6 +5,7 @@ const { validationResult } = require('express-validator');
 const HttpError = require('../models/http-error');
 const User = require('../models/user');
 const gameProfile = require('../models/warzoneUser');
+const Squad = require('../models/warzoneSquad');
 
 exports.signup = async (req, res, next) => {
     /* First we will check if we received errors from the route with the help of express-validator third party package */
@@ -83,7 +84,7 @@ exports.signup = async (req, res, next) => {
             });
             await createdUser.save();
             const token = jwt.sign(
-                { userID: createdUser.id, email: createdUser.email, gameProfileID: newGameProfileID },
+                { userID: createdUser.id, email: createdUser.email },
                 process.env.JWT_SECRET,
                 { expiresIn: '2h' }
             );
@@ -115,7 +116,7 @@ exports.signup = async (req, res, next) => {
             });
             await createdUser.save();
             const token = jwt.sign(
-                { userID: createdUser.id, email: createdUser.email, gameProfileID: existingProfile.id },
+                { userID: createdUser.id, email: createdUser.email },
                 process.env.JWT_SECRET,
                 { expiresIn: '2h' }
             );
@@ -217,26 +218,39 @@ exports.addSquad = async (req, res, next) => {
         const error = new HttpError('Invalid inputs passed, please check your data.', 422);
         return next(error);
     }
-    const { usernames, platforms, userID, squadName } = req.body;
+    const { usernames, platforms, squadName } = req.body;
+
+    /* Because of 'is-auth' middleware, the only users that will be allowed to use this service 
+     * Are registered users, we extract from the jwt token the 'userID' and saved him the req. */
+    const { userID } = req.userData;
+
     if (usernames.length != platforms.length) {
         const error = new HttpError('Invalid inputs passed, please check your data.', 422);
         return next(error);
     }
+    if (!userID) {
+        console.log("Failed to access the userID from after the 'is-auth' middleware.");
+        const error = new HttpError('Access denied, please make sure you have logged in recently.', 401);
+        return next(error);
+    }
+
     let squadFound = false;
     try {
         const squadData = await axios(addSquadConfigBuilder(usernames, platforms));
         const squadID = squadData.data.squadID;
         squadFound = true;
         const currentUser = await User.findById(userID);
+        /* After we extract the user and squad models, we need to check if the user is already have that squad in his list in the database. */
         const checkForExistingSquad = squadExists(currentUser, squadName, squadID);
         if (!checkForExistingSquad) {
-            currentUser.squads.push({squadID : squadID, squadName : squadName});
+            currentUser.squads.push({ squadID: squadID, squadName: squadName });
             await currentUser.save();
-            return res.status(200).json({ squadID: squadID });
+            return res.status(200).json({ squadList: currentUser.squads });
         }
         else {
+            // The case the user already has that squad...
             let error;
-            if(checkForExistingSquad.squadExists) {
+            if (checkForExistingSquad.squadExists) {
                 error = new HttpError(`You already have squad that contains those players, the squad name is: '${checkForExistingSquad.existingSquadName}' `, 422);
             }
             else {
@@ -274,22 +288,119 @@ const addSquadConfigBuilder = (usernames, platforms) => {
 
 const squadExists = (user, squadName, squadID) => {
     const result = {
-        squadExists : false,
-        squadNameExists : false,
-        existingSquadName : ""
+        squadExists: false,
+        squadNameExists: false,
+        existingSquadName: ""
     };
-    for(let i = 0 ; i < user.squads.length ; i++) {
-        if(user.squads[i].squadID === squadID) {
+    for (let i = 0; i < user.squads.length; i++) {
+        if (user.squads[i].squadID === squadID) {
             result.squadExists = true;
             result.existingSquadName = user.squads[i].squadName;
             return result;
         }
 
-        if(user.squads[i].squadName === squadName) {
+        if (user.squads[i].squadName === squadName) {
             // If we already have a squad under this name we will tell the user he cant do that.
             result.squadNameExists = true;
             return result;
         };
     }
     return null;
+};
+
+exports.getUserData = async (req, res, next) => {
+    /* This service will be available only for registered users, and will return summary of their stats 
+     * Based on the saved data on the server. */
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        const error = new HttpError('Invalid inputs passed, please check your data.', 422);
+        return next(error);
+    }
+
+    /* Because of 'is-auth' middleware, the only users that will be allowed to use this service 
+     * Are registered users, we extract from the jwt token the 'userID' and saved him the req. */
+    const { userID } = req.userData;
+
+    if (!userID) {
+        // Rare case that should not occur because of the 'is-auth' middleware.
+        console.log("Failed to access the userID from after the 'is-auth' middleware.");
+        const error = new HttpError('Access denied, please make sure you have logged in recently.', 401);
+        return next(error);
+    }
+
+    try {
+        // First we find the user model in the database
+        const currentUser = await User.findById(userID);
+        const currentPlayerInGameProfile = await gameProfile.findById(currentUser.gameProfile);
+        // After we found him we extract the wanted fields from the database model. 
+        const gameProfileData = (({ username, platform, lastGamesStats, generalStats }) => ({ username, platform, lastGamesStats, generalStats }))(currentPlayerInGameProfile);
+        // Now we will sort the user squads data in order to ease their use in the front side.
+        const squadList = [];
+        // First we check if the user there are registered squads
+        if (currentUser.squads.length > 0) {
+            // The case where the user have registered squads, we iterate through the embedded 'squads' array which contain the squads id's
+            for (let i = 0; i < currentUser.squads.length; i++) {
+                // Then we search for each squad object in the database and extract the wanted stats
+                let squadObj = await Squad.findById(currentUser.squads[i].squadID);
+                let squadSummary = getSquadSummaryStats(squadObj);
+                if (squadSummary) {
+                    // The case the squad have shared stats.
+                    squadList.push(squadSummary);
+                }
+                else {
+                    // Some squads does not have shared games stats because they did not play together since they registered in the website
+                    squadList.push({ usernames: squadObj.usernames, platforms: squadObj.platforms });
+                }
+            }
+        }
+        return res.status(200).json({ userData: { gameProfile: gameProfileData, squadList: squadList } });
+    }
+    catch (err) {
+        console.log(err);
+        const error = new HttpError("Failed to access user data, please try again later.", 500);
+        return next(error);
+    }
+
+};
+
+const getSquadSummaryStats = (squadObj) => {
+    /* This method will get squadObj which contains the the schema fields as they were defined in the database
+     * And we will iterate on each player in the squad and will make summary for each stats for the entire squad,
+     * With general information about the squad */
+    if (!squadObj.playersSharedGamesStats && !squadObj.sharedGamesGeneralStats) {
+        // The case the squad does not have shared stats.
+        return null;
+    }
+    const res = {};
+    if (squadObj.playersSharedGamesStats.length > 0) {
+        // Here we will summary some selected stats for the entire squad.
+        getSquadSharedGamesStatsSummary(res, squadObj.playersSharedGamesStats);
+    }
+    if (squadObj.sharedGamesGeneralStats.length > 0) {
+        // Here we will count the number of matches and will return them with the general stats of that matches
+        getSquadGamesGeneralStatsSummary(res, squadObj);
+    }
+    // Lastly, we will add the usernames and platforms of that squad.
+    res['usernames'] = squadObj.usernames;
+    res['platforms'] = squadObj.platforms;
+    return res;
+};
+
+const getSquadSharedGamesStatsSummary = (resultObj, playersSharedGamesStats) => {
+    /* This method will get the array which contains the players objects with the shared games stats
+     * And will return the summary of the selected stats, first we extract the values into array with the 'map'
+     * method and then summaries the array values with reducer function. */
+    resultObj['avgSquadKd'] = playersSharedGamesStats.map(i => i['kdRatio']).reduce((a, b) => a + b) / playersSharedGamesStats.length;
+    resultObj['SquadKills'] = playersSharedGamesStats.map(i => i['kills']).reduce((a, b) => a + b);
+    resultObj['SquadDeaths'] = playersSharedGamesStats.map(i => i['deaths']).reduce((a, b) => a + b);
+    resultObj['SquadAssists'] = playersSharedGamesStats.map(i => i['assists']).reduce((a, b) => a + b);
+    resultObj['SquadDamage'] = playersSharedGamesStats.map(i => i['damageDone']).reduce((a, b) => a + b);
+};
+
+const getSquadGamesGeneralStatsSummary = (resultObj, squadObj) => {
+    // This method will return the number of the documented shared games in the database, and their general stats array.
+    resultObj['numberOfMatches'] = squadObj.sharedGamesGeneralStats.length;
+    resultObj['sharedGamesGeneralStats'] = squadObj.sharedGamesGeneralStats;
 };

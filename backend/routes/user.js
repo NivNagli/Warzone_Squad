@@ -2,6 +2,7 @@ const express = require('express');
 const { check } = require('express-validator');
 const router = express.Router();
 const userController = require('../controllers/user');
+const isAuth = require('../middleware/is-auth');
 
 router.post(
     '/signup',
@@ -40,7 +41,7 @@ router.post(
 );
 
 router.post(
-    '/add-squad',
+    '/add-squad', isAuth,
 
     [
         check('usernames')
@@ -50,9 +51,6 @@ router.post(
         check('platforms')
         .not()
         .isEmpty(),
-
-        check('userID')
-        .isLength({min : 1}),
         
         check('squadName')
         .isLength({min : 1})
@@ -60,5 +58,7 @@ router.post(
 
     userController.addSquad
 );
+
+router.get('/get-user-data', isAuth, userController.getUserData);
 
 module.exports = router;
