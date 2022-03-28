@@ -18,7 +18,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialAuthState = {
   isAuthenticated: localStorage.getItem('token') ? true : false,
   userID: localStorage.getItem('userID') || null,
-  gameProfileID: localStorage.getItem('gameProfileID') || null
+  gameProfileID: localStorage.getItem('gameProfileID') || null,
+  token: localStorage.getItem("token") || null
 };
 
 
@@ -27,9 +28,9 @@ const authSlice = createSlice({
   initialState: initialAuthState,
   reducers: {
     login(state, action) {
-      localStorage.setItem('token', JSON.stringify(action.payload.token));
-      localStorage.setItem('userID', JSON.stringify(action.payload.userID));
-      localStorage.setItem('gameProfileID', JSON.stringify(action.payload.gameProfileID));
+      localStorage.setItem('token', action.payload.token);
+      localStorage.setItem('userID', action.payload.userID);
+      localStorage.setItem('gameProfileID', action.payload.gameProfileID);
       state.isAuthenticated = true;
       state.userID = action.payload.userID;
       state.gameProfileID = action.payload.gameProfileID;
