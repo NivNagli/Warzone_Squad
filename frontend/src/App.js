@@ -71,6 +71,15 @@ function App() {
         <Route path="/Compare-Search" exact>
           <ComparePlayersPage />
         </Route>
+        <Route path="/playerSearch/:username/:platform" exact>
+          <PlayerSearchResultPage/>
+        </Route>
+        <Route path="/matchSearch/:matchID/" exact>
+          <MatchSearchResultPage/>
+        </Route>
+        <Route path="/playersCompare/:players/" exact>
+          <CompareResultPage/>
+        </Route>
         <Route path="/" exact>
           <HomePage />
         </Route>

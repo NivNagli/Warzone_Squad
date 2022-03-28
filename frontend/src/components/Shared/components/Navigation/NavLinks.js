@@ -4,13 +4,13 @@ import classes from './NavLinks.module.css';
 import Button from '../Button/Button';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { authActions} from '../../../../store/auth';
+import { authActions } from '../../../../store/auth';
 import { useHistory } from 'react-router-dom'
 
 const NavLinks = props => {
     const dispatch = useDispatch();
     const isLoggedIn = useSelector(state => state.auth.isAuthenticated);
-    
+
     const history = useHistory();
     const onLogout = () => {
         dispatch(authActions.logout());
@@ -30,6 +30,11 @@ const NavLinks = props => {
                             Search
                         </NavLink>
                     </li>
+                    {isLoggedIn && (
+                        <NavLink className={classes.nav__link} to="/Player-Profile" exact>
+                            Profile
+                        </NavLink>
+                    )}
                 </ul>
             </div>
 
@@ -45,7 +50,7 @@ const NavLinks = props => {
                     <Button parentClass={classes.button} onClick={onLogout}>Logout</Button>
                 )}
             </div>
-            
+
         </React.Fragment>
     );
 };
