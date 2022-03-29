@@ -18,6 +18,7 @@ import { useForm } from '../../Shared/hooks/form-hook';
 import { useDispatch } from 'react-redux';
 import { authActions } from '../../../store/auth';
 import { useHttpClient } from '../../Shared/hooks/http-hook';
+import { signupAttempt } from '../../../Middlewares/backend-requests';
 
 const Signup = () => {
   // The useForm custom hook will serve us in order to manage the signup form.
@@ -50,38 +51,11 @@ const Signup = () => {
   const dispatch = useDispatch();
   useEffect(() => { }, [error]);
 
-  /* This method will serve use to send request to the server and will handle the response
- * accordingly. */
-  const signupAttempt = async (email, password, username, platform) => {
-    try {
-      /* Using our http custom hook in order to send the request and update the 'isLoading', 'error'
-       * States that the hook produce for us */
-      const responseData = await sendRequest(
-        `${API_PREFIX}/user/signup`, // URL
-        'POST', // METHOD
-        { // BODY
-          email: email,
-          password: password,
-          username: username,
-          platform: platform
-        },
-        { // HEADERS
-        },
-        "Signup Failed, Check credentials and try again, [SPP]." // DEFAULT ERROR MSG SPP = server problem possibility.
-      );
-      return responseData; // The case the user enter valid credentials.
-    }
-    catch (e) {
-      console.log(`err__login = ${e}`); // The case the user entered invalid credentials / server problem.
-      return null;
-    }
-  };
-
-    // The submit handler for the signup form, this is the procedure that will execute in button press event:
+  // The submit handler for the signup form, this is the procedure that will execute in button press event:
   const placeSubmitHandler = async event => {
     event.preventDefault();
     try {
-      const reqData = await signupAttempt(formState.inputs.email.value, formState.inputs.password.value, formState.inputs.username.value, enteredPlatform);
+      const reqData = await signupAttempt(formState.inputs.email.value, formState.inputs.password.value, formState.inputs.username.value, enteredPlatform, sendRequest);
       if (reqData) {  // The case the user successfully signed up.
         clearError(); // TODO: Make sure that not cause problems in edge cases.
         const { userID, gameProfileID, token } = reqData.data;

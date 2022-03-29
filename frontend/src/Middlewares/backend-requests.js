@@ -17,6 +17,35 @@ const makeBattleUsername = (username) => {
     return "InvalidUserName";
 }
 
+export const signupAttempt = async (email, password, username, platform, sendRequest) => {
+    /* This method will serve use to send request to the server and will handle the response
+     * accordingly. */
+    try {
+        let fixedUsername = username;
+        if (platform === 'battle') {
+            fixedUsername = makeBattleUsername(username);
+        }
+        const responseData = await sendRequest(
+            `${API_PREFIX}/user/signup`, // URL
+            'POST', // METHOD
+            { // BODY
+                email: email,
+                password: password,
+                username: fixedUsername,
+                platform: platform
+            },
+            { // HEADERS
+            },
+            "Signup Failed, Check credentials and try again, [SPP]." // DEFAULT ERROR MSG SPP = server problem possibility.
+        );
+        return responseData; // The case the user enter valid credentials.
+    }
+    catch (e) {
+        console.log(`err__login = ${e}`); // The case the user entered invalid credentials / server problem.
+        return null;
+    }
+};
+
 export const playerSearchAttempt = async (username, platform, sendRequest) => {
     try {
         /* Using our http custom hook in order to send the request and update the 'isLoading', 'error'
