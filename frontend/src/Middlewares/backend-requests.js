@@ -116,3 +116,28 @@ export const getUserData = async (token, sendRequest) => {
     }
 };
 
+export const addSquad = async (token, usernames, platforms, squadName, sendRequest) => {
+    try {
+        const url = `${API_PREFIX}/user/add-squad`;
+        const reqBody = {
+            usernames: usernames,
+            platforms: platforms,
+            squadName: squadName
+        };
+        const responseData = await sendRequest(
+            url, // URL
+            'POST', // METHOD
+            reqBody,
+            { // HEADERS
+                Authorization: 'Bearer ' + token
+            },
+            "Failed to add the squad, Please try again, [SPP]." // DEFAULT ERROR MSG SPP = server problem possibility.
+        );
+        return responseData; // The case the user enter valid credentials.
+    }
+    catch (e) {
+        console.log(`err__login = ${e}`); // The case the user entered invalid credentials / server problem.
+        return null;
+    }
+};
+
