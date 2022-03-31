@@ -1,27 +1,50 @@
 // src/store/auth.js
 import { createSlice } from '@reduxjs/toolkit';
+import jwt_decode from "jwt-decode";
 
-// const parseJwt = (token) => { // TODO: Relevant to late stage when we will need to check the jwt expression
-//   try {
-//     return JSON.parse(atob(token.split(".")[1]));
-//   } catch (e) {
-//     return null;
-//   }
-// }; 
-
-  // if(isAuth) { // TODO: Relevant to late stage when we will need to check the jwt expression
-  //   const decodedJwt = parseJwt(localStorage.getItem("token"));
-  //   console.log(decodedJwt.exp * 1000 < Date.now());
-  //   console.log(decodedJwt.exp * 1000, Date.now());
-  // }
-
-const initialAuthState = {
-  isAuthenticated: localStorage.getItem('token') ? true : false,
-  userID: localStorage.getItem('userID') || null,
-  gameProfileID: localStorage.getItem('gameProfileID') || null,
-  token: localStorage.getItem("token") || null
+const tokenValidity = (jwtToken) => {
+  /* This method will serve us to check if the expiration time for the jwt token if hes exists. */
+  try {
+    const { exp } = jwt_decode(jwtToken);
+    // Refresh the token a minute early to avoid latency issues
+    const expirationTime = (exp * 1000) - 60000;
+    if (Date.now() >= expirationTime) {
+      return false;
+    }
+    return true;
+  }
+  catch {
+    return false;
+  }
 };
 
+const initialAuthStateBuilder = () => {
+  /* This method will setup the initialState for the auth slice in the redux */
+  if (localStorage.getItem('token')) {
+    if (tokenValidity(localStorage.getItem('token'))) {
+      return {
+        isAuthenticated: localStorage.getItem('token') ? true : false,
+        userID: localStorage.getItem('userID') || null,
+        gameProfileID: localStorage.getItem('gameProfileID') || null,
+        token: localStorage.getItem("token") || null
+      };
+    }
+    else {
+      localStorage.clear();
+    }
+  }
+  else {
+    localStorage.clear();
+    return {
+      isAuthenticated: false,
+      userID: null,
+      gameProfileID: null,
+      token: null
+    };
+  }
+};
+
+const initialAuthState = initialAuthStateBuilder();
 
 const authSlice = createSlice({
   name: 'authentication',
