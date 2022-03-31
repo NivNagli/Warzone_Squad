@@ -24,6 +24,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    color:#e2f023;
   }
 
   @media (max-width: 750px) {
