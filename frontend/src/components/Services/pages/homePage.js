@@ -4,6 +4,7 @@ import React from 'react';
 import img from '../../../photos/test2.jpeg';
 import BenefitMessage from '../../Shared/components/UI/BenefitMessage';
 const homePage = () => {
+    // The main page for the application.
     return (
         <React.Fragment>
             <span className={classes.main_span}>Welcome To WarzoneSquad </span>

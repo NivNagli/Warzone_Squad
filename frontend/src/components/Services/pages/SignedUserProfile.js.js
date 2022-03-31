@@ -8,14 +8,12 @@ import ErrorMessage from '../../Shared/components/UI/ErrorMessage';
 import GreetingMessage from '../../Shared/components/UI/GreetingMessage';
 import { getUserData } from '../../../Middlewares/backend-requests';
 import { useHistory } from "react-router-dom";
-import AddSquadButton from '../../User/components/Squads/AddSquadButton';
 import SquadList from '../../User/components/Squads/SquadList/SquadList';
 import SignedUserGeneralStats from '../../User/components/GeneralStats/SignedUserGeneralStats';
 
 const SignedUserProfile = props => {
     const dispatch = useDispatch();
     let history = useHistory();
-    const isLoggedIn = useSelector(state => state.auth.isAuthenticated);
     const token = useSelector(state => state.auth.token);
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
@@ -41,8 +39,6 @@ const SignedUserProfile = props => {
             }
             const reqData = await getUserData(backupToken, sendRequest);
             if (reqData) {
-                console.log(reqData);
-                //<SquadList squadListHeader={"Your Squads"} squadsArray={userData.data.userData.squadList}></SquadList>
                 clearError();
                 setData(reqData);
                 return 1;

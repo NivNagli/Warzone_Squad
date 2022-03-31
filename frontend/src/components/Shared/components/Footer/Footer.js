@@ -4,6 +4,7 @@ import classes from './Footer.module.css';
 import { NavLink } from 'react-router-dom';
 
 const Footer = props => {
+    /* This component is the footer of our application, will include links and information relevant to the site. */
     return (
         <div className={classes.footer}>
             <ul>
@@ -23,5 +24,6 @@ const Footer = props => {
         </div>
     );
 };
-// <li><a href="https://www.codepen.com/" target="_blank"><i class="fa fas fa-copyright fa-fw"></i></a></li>
+
+
 export default Footer;

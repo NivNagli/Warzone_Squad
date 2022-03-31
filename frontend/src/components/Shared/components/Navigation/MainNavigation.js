@@ -4,6 +4,9 @@ import { NavLink } from 'react-router-dom';
 
 import classes from './MainNavigation.module.css';
 const MainNavigation = props => {
+    /* This component is the main navigation of the application, which will be on the top of the page,
+     * it contains the main logo for the site and the 'NavLink' and 'NavLinks' components
+     * for the internal links to the site pages. */
     return (
         <React.Fragment>
             {

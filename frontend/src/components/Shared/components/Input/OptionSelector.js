@@ -1,6 +1,7 @@
 import React from 'react';
 import classes from './OptionSelector.module.css';
 const OptionSelector = props => {
+    /* Generic component to display select with given options and onChange method from the props. */
     const onChangeHandler = (event) => {
         props.selectChanged(event);
     }

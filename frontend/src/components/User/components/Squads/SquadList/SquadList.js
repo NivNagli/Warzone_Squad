@@ -4,9 +4,8 @@ import SquadBasicDiv from './SquadBasicDiv';
 import AddSquadButton from '../AddSquadButton';
 
 const SquadList = props => {
-    /* As the name sound like this component will be a div that contain list of Squades, for each Squad 
-     * we send a async function that send a get request to the server and search for the Squad information
-     * in case we found that Squad we redirect to the SquadResult page of that Squad. */
+    /* This component is pretty similar to the 'MatchList' component, but this time we display the general
+     * stats of the given squad, and will give the user the 'add squad' button to add squads to his user. */
     if (!props.squadsArray.length) {
         return (
             <div className={classes.squad__list}>

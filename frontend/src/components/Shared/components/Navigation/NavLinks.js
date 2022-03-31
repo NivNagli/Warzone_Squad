@@ -2,17 +2,22 @@ import { NavLink } from 'react-router-dom';
 import React from 'react';
 import classes from './NavLinks.module.css';
 import Button from '../Button/Button';
-import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { authActions } from '../../../../store/auth';
 import { useHistory } from 'react-router-dom'
 
 const NavLinks = props => {
+    /* As the same sounds like this component is responsible for the navigation links,
+     * There are two display options one for unregistered user, and the second for registered user. */
+
+    /* Using our redux to access the 'isAuthenticated' state which determine if the user is 
+     * authenticated or not, and the links will be displayed accordingly. */
     const dispatch = useDispatch();
     const isLoggedIn = useSelector(state => state.auth.isAuthenticated);
 
     const history = useHistory();
     const onLogout = () => {
+        // The function for the logout button, we are using the 'logout' method from the redux slice 'auth'.
         dispatch(authActions.logout());
         history.push("/");
     };
