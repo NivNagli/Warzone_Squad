@@ -22,9 +22,12 @@ import ProfilePage from './components/Services/pages/SignedUserProfile.js';
 import './App.css';
 
 function App() {
+  /* isAuth will determine which routes we will expose to the user */
   const isAuth = useSelector(state => state.auth.isAuthenticated);
+  /* routes will save the correct routes to display */
   let routes;
   if (!isAuth) {
+    /* The view for unregistered user */
     routes = (
       <Switch>
         <Route path="/Login" exact>
@@ -63,7 +66,7 @@ function App() {
     );
   }
   else {
-    // TODO: Handle the case for signed user
+    /* The view for registered user */
     routes = (
       <Switch>
         <Route path="/Player-Search" exact>
