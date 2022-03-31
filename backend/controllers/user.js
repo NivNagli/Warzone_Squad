@@ -352,6 +352,10 @@ exports.getUserData = async (req, res, next) => {
                     squadList.push(squadSummary);
                 }
                 else {
+                    if(!squadObj) {
+                        const error = new HttpError("Database issue! please contact us to solve this issue.", 500);
+                        return next(error);
+                    }
                     // Some squads does not have shared games stats because they did not play together since they registered in the website
                     squadList.push({ usernames: squadObj.usernames, platforms: squadObj.platforms, squadName: currentUser.squads[i].squadName});
                 }
@@ -371,7 +375,10 @@ const getSquadSummaryStats = (squadObj) => {
     /* This method will get squadObj which contains the the schema fields as they were defined in the database
      * And we will iterate on each player in the squad and will make summary for each stats for the entire squad,
      * With general information about the squad */
-    if (!squadObj.playersSharedGamesStats && !squadObj.sharedGamesGeneralStats) {
+
+    if(!squadObj) return null; // Database failure!
+
+    if (!squadObj.playersSharedGamesStats.length && !squadObj.sharedGamesGeneralStats.length) {
         // The case the squad does not have shared stats.
         return null;
     }
