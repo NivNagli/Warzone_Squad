@@ -147,9 +147,11 @@ export const getUserData = async (token, sendRequest) => {
 
 export const addSquad = async (token, usernames, platforms, squadName, sendRequest) => {
     try {
+        const usernamesCopy = [...usernames]; // In order not to effect the original users array. 
+        fixBattleUsernames(usernamesCopy, platforms);
         const url = `${API_PREFIX}/user/add-squad`;
         const reqBody = {
-            usernames: usernames,
+            usernames: usernamesCopy,
             platforms: platforms,
             squadName: squadName
         };

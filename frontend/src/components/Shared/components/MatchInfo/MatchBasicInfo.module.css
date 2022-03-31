@@ -27,6 +27,7 @@
     overflow: hidden;
     font-style: oblique;
     width:100%;
+    color:white;
   }
   
   @media (max-width: 375px) {

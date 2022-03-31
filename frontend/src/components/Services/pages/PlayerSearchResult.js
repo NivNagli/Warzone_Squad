@@ -66,7 +66,7 @@ const PlayerSearchResult = (props) => {
             return (
                 <React.Fragment>
                     <PlayerBasicInfo name={location.state.username}></PlayerBasicInfo>
-                    <BenefitMessage title={' Registered Users:'} message={'Can look at the history of their last 100 games instead of 20!'} subMessage={"The data is available on your 'Profile' page"}></BenefitMessage>
+                    <BenefitMessage title={' Registered Users:'} message={'Can look at the history of their last 100 games instead of 20!'} subMessage={"The data is available on your 'Profile' page."}></BenefitMessage>
                     <GeneralStatsTable header={"Lifetime Stats"} data={filteredLifetimeStats}></GeneralStatsTable>
                     <GeneralStatsTable header={"Weekly Stats"} data={filteredWeeklyStats}></GeneralStatsTable>
                     <MatchList matchListHeader={"Last Games:"} matches={userData.data.lastGamesStats} numOfMatches={20}></MatchList>

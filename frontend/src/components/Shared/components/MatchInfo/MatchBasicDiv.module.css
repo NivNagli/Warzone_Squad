@@ -66,3 +66,7 @@
     cursor: pointer;
   }
 }
+
+.match__div:hover {
+  background-color:#052b4b;
+}

@@ -71,8 +71,7 @@ const LoginPage = () => {
     try {
       const reqData = await loginAttempt(formState.inputs.email.value, formState.inputs.password.value);
       if (reqData) {  // The case the user successfully signed in.
-        console.log(1);
-        clearError();  // TODO: Make sure that not cause problems in edge cases.
+        clearError();
         const { userID, gameProfileID, token } = reqData.data;
         // Using the redux function in order to update that the user is authenticated.
         dispatch(authActions.login({
