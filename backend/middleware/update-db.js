@@ -32,7 +32,7 @@ exports.updateSquadsData = async () => {
      * In order for all requests to be processed simultaneously to improve efficiency I use here 'request barrier' aka 'squadsUpdateRequestsBarrier' 
      * that we will release once all requests are ready to be sent.
     /************************************************************************************************/
-    const updateIntervalInMilSec = 86400000; // 24 hours in milliseconds.
+    const updateIntervalInMilSec = 900000; // 10 minutes in milliseconds.
     const nextUpdateWindowTime = new Date().getTime() - updateIntervalInMilSec;
     const squadsUpdateRequestsBarrier = [];
     const squadsDbCursor = await WarzoneSquad.find({"lastTimeUpdated" : {$lt: nextUpdateWindowTime}});
