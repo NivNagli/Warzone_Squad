@@ -3,21 +3,21 @@ import { useHistory } from "react-router-dom";
 import classes from './AddSquadForm.module.css';
 
 // Components imports:
-import SearchUser from '../../Shared/components/Input/SearchUser';
-import Button from '../../Shared/components/Button/Button';
-import OptionSelector from '../../Shared/components/Input/OptionSelector';
-import LoadingSpinner from '../../Shared/components/UI/LoadingSpinner';
-import ErrorMessage from '../../Shared/components/UI/ErrorMessage';
-import WarningMessage from '../../Shared/components/UI/WarningMessage';
-import Input from '../../Shared/components/Input/Input';
-import { useForm } from '../../Shared/hooks/form-hook';
+import SearchUser from '../../../Shared/components/Input/SearchUser';
+import Button from '../../../Shared/components/Button/Button';
+import OptionSelector from '../../../Shared/components/Input/OptionSelector';
+import LoadingSpinner from '../../../Shared/components/UI/LoadingSpinner';
+import ErrorMessage from '../../../Shared/components/UI/ErrorMessage';
+import WarningMessage from '../../../Shared/components/UI/WarningMessage';
+import Input from '../../../Shared/components/Input/Input';
+import { useForm } from '../../../Shared/hooks/form-hook';
 import {
     VALIDATOR_REQUIRE
-} from '../../Shared/util/validators';
+} from '../../../Shared/util/validators';
 
 // custom and built-in hooks imports:
-import { useHttpClient } from '../../Shared/hooks/http-hook';
-import { addSquad } from '../../../Middlewares/backend-requests';
+import { useHttpClient } from '../../../Shared/hooks/http-hook';
+import { addSquad } from '../../../../Middlewares/backend-requests';
 
 const AddSquadForm = (props) => {
     /* This component is very similar to the 'CompareSearch' component, but this time we are receiving the jwt
@@ -121,8 +121,8 @@ const AddSquadForm = (props) => {
                 userFound = true;
                 clearError();
                 setWhileSearch(false);
-                // redirect to the result page, with the inputs parameters. 
-                // TODO: Add operation for the case of successful request.
+                // Refresh the page in order to send request again to server and get the updated squads list */
+                history.go(0);
             }
         }
         catch (e) {
@@ -136,10 +136,10 @@ const AddSquadForm = (props) => {
     };
 
     const playersDataArray = [
-        <SearchUser updateSearchFields={onChangeSearchFieldsUser1} key="User1FromaddSquad" />,
-        <SearchUser updateSearchFields={onChangeSearchFieldsUser2} key="User2FromaddSquad" />,
-        <SearchUser updateSearchFields={onChangeSearchFieldsUser3} key="User3FromaddSquad" />,
-        <SearchUser updateSearchFields={onChangeSearchFieldsUser4} key="User4FromaddSquad" />
+        <SearchUser updateSearchFields={onChangeSearchFieldsUser1} key="User1FromAddSquad" />,
+        <SearchUser updateSearchFields={onChangeSearchFieldsUser2} key="User2FromAddSquad" />,
+        <SearchUser updateSearchFields={onChangeSearchFieldsUser3} key="User3FromAddSquad" />,
+        <SearchUser updateSearchFields={onChangeSearchFieldsUser4} key="User4FromAddSquad" />
     ]
     return (
         <React.Fragment>

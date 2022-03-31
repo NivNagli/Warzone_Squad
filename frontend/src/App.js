@@ -17,6 +17,7 @@ import HomePage from './components/Services/pages/homePage';
 import PlayerSearchResultPage from './components/Services/pages/PlayerSearchResult';
 import MatchSearchResultPage from './components/Services/pages/MatchSearchResult';
 import CompareResultPage from './components/Services/pages/CompareResult';
+import ProfilePage from './components/Services/pages/SignedUserProfile.js';
 
 import './App.css';
 
@@ -39,13 +40,13 @@ function App() {
           <ComparePlayersPage />
         </Route>
         <Route path="/playerSearch/:username/:platform" exact>
-          <PlayerSearchResultPage/>
+          <PlayerSearchResultPage />
         </Route>
         <Route path="/matchSearch/:matchID/" exact>
-          <MatchSearchResultPage/>
+          <MatchSearchResultPage />
         </Route>
         <Route path="/playersCompare/:players/" exact>
-          <CompareResultPage/>
+          <CompareResultPage />
         </Route>
         <Route path="/" exact>
           <HomePage />
@@ -72,13 +73,16 @@ function App() {
           <ComparePlayersPage />
         </Route>
         <Route path="/playerSearch/:username/:platform" exact>
-          <PlayerSearchResultPage/>
+          <PlayerSearchResultPage />
         </Route>
         <Route path="/matchSearch/:matchID/" exact>
-          <MatchSearchResultPage/>
+          <MatchSearchResultPage />
         </Route>
         <Route path="/playersCompare/:players/" exact>
-          <CompareResultPage/>
+          <CompareResultPage />
+        </Route>
+        <Route path="/Player-Profile" exact>
+          <ProfilePage />
         </Route>
         <Route path="/" exact>
           <HomePage />
