@@ -234,11 +234,11 @@ exports.addSquad = async (req, res, next) => {
         return next(error);
     }
 
-    let squadFound = false;
+    let squadFound = false; // Boolean flag to indicate whether the protocol failed because of failure to create / find the squad in the database.
     try {
         const squadData = await axios(addSquadConfigBuilder(usernames, platforms));
         const squadID = squadData.data.squadID;
-        squadFound = true;
+        squadFound = true;  // The case the squad created or found successfully.
         const currentUser = await User.findById(userID);
         /* After we extract the user and squad models, we need to check if the user is already have that squad in his list in the database. */
         const checkForExistingSquad = squadExists(currentUser, squadName, squadID);
@@ -262,6 +262,7 @@ exports.addSquad = async (req, res, next) => {
     catch (err) {
         let error;
         if (!squadFound) {
+            // The case we didn't find or enable to create the squad.
             error = new HttpError("Creating a new squad failed, make sure all the users data is valid!", 500);
         }
         else {
