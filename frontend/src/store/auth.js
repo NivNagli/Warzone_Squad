@@ -31,6 +31,12 @@ const initialAuthStateBuilder = () => {
     }
     else {
       localStorage.clear();
+      return {
+        isAuthenticated: false,
+        userID: null,
+        gameProfileID: null,
+        token: null
+      };
     }
   }
   else {
