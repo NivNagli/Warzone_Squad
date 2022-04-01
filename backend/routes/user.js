@@ -39,7 +39,7 @@ router.post(
 
     userController.login
 );
-
+/* protected methods */
 router.post(
     '/add-squad', isAuth,
 
