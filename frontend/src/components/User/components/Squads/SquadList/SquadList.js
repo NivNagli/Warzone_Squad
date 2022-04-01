@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import classes from './SquadList.module.css';
 import SquadBasicDiv from './SquadBasicDiv';
 import AddSquadButton from '../AddSquadButton';
@@ -16,7 +16,7 @@ const SquadList = props => {
     else {
         const Squads = [];
         for (let i = 0; i < props.squadsArray.length; i++) {
-            Squads.push(<SquadBasicDiv data={props.squadsArray[i]} key={props.squadsArray[i].SquadName}></SquadBasicDiv>);
+            Squads.push(<SquadBasicDiv data={props.squadsArray[i]} key={`${props.squadsArray[i].SquadName}${i}`}></SquadBasicDiv>);
         }
         return (
             <div className={classes.squad__list}>

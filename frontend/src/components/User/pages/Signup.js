@@ -12,7 +12,6 @@ import {
   VALIDATOR_MINLENGTH,
   VALIDATOR_EMAIL
 } from '../../Shared/util/validators';
-import API_PREFIX from '../../../sharedUrls';
 // custom and built-in hooks imports:
 import { useForm } from '../../Shared/hooks/form-hook';
 import { useDispatch } from 'react-redux';
