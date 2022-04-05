@@ -39,7 +39,32 @@ export const signupAttempt = async (email, password, username, platform, sendReq
             },
             { // HEADERS
             },
-            "Signup Failed, Check credentials and try again, [SPP]." // DEFAULT ERROR MSG SPP = server problem possibility.
+            "Signup Failed, Check credentials and try again, COD's Official API is currently slow." // DEFAULT ERROR MSG SPP = server problem possibility.
+        );
+        return responseData; // The case the user enter valid credentials.
+    }
+    catch (e) {
+        console.log(`err__login = ${e}`); // The case the user entered invalid credentials / server problem.
+        return null;
+    }
+};
+
+export const loginAttempt = async (email, password, sendRequest) => {
+    /* This method will serve use to send login request to the server and will handle the response
+     * accordingly. */
+    try {
+        /* Using our http custom hook in order to send the request and update the 'isLoading', 'error'
+         * States that the hook produce for us */
+        const responseData = await sendRequest(
+            `${API_PREFIX}/user/login`, // URL
+            'POST', // METHOD
+            { // BODY
+                email: email,
+                password: password
+            },
+            { // HEADERS
+            },
+            "Login Failed, Check credentials and try again." // DEFAULT ERROR MSG, SPP = server problem possibility.
         );
         return responseData; // The case the user enter valid credentials.
     }
@@ -64,7 +89,7 @@ export const playerSearchAttempt = async (username, platform, sendRequest) => {
             },
             { // HEADERS
             },
-            "Searched Failed, Check username and platform and try again, [SPP]." // DEFAULT ERROR MSG SPP = server problem possibility.
+            "Searched Failed, Check username and platform and try again, ." // DEFAULT ERROR MSG SPP = server problem possibility.
         );
         return responseData; // The case the user enter valid credentials.
     }
@@ -127,7 +152,7 @@ export const matchSearchAttempt = async (matchID, sendRequest) => {
     }
 };
 
-export const getUserData = async (token, sendRequest) => {
+export const getUserData = async (token, sendRequest, onExpired) => {
     try {
         const url = `${API_PREFIX}/user/get-user-data`;
         const reqBody = {};
@@ -144,11 +169,11 @@ export const getUserData = async (token, sendRequest) => {
     }
     catch (e) {
         console.log(`err__login = ${e}`); // The case the user entered invalid credentials / server problem.
-        return null;
+        return tokenExpired(e, onExpired);
     }
 };
 
-export const addSquad = async (token, usernames, platforms, squadName, sendRequest) => {
+export const addSquad = async (token, usernames, platforms, squadName, sendRequest, onExpired) => {
     try {
         const usernamesCopy = [...usernames]; // In order not to effect the original users array. 
         fixBattleUsernames(usernamesCopy, platforms);
@@ -171,7 +196,16 @@ export const addSquad = async (token, usernames, platforms, squadName, sendReque
     }
     catch (e) {
         console.log(`err__login = ${e}`); // The case the user entered invalid credentials / server problem.
-        return null;
+        return tokenExpired(e, onExpired);
     }
 };
 
+const tokenExpired = (error, onExpired) => {
+    try {
+        if (error.response.status === 403) {
+            onExpired();
+        }
+    }
+    catch { }
+    return null;
+}
