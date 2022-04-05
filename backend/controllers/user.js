@@ -353,6 +353,7 @@ exports.getUserData = async (req, res, next) => {
                 }
                 else {
                     if(!squadObj) {
+                        // This is the case where the squad as been deleted form the db.
                         const error = new HttpError("Database issue! please contact us to solve this issue.", 500);
                         return next(error);
                     }
