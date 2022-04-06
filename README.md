@@ -6,12 +6,12 @@ Offical Site URL : [https://xwarzonesquad.web.app/](https://xwarzonesquad.web.ap
 
 ## ***General design && description***:
 
-**WarzoneSquad designed to give the users a convenient way to track their and their friends stats in the popular call of duty warzone game,
-The site contains “public” services that are available to all users and "protected" services that are only available to registered users.
+***WarzoneSquad designed to give the users a convenient way to track their and their friends stats in the popular call of duty warzone game,
+The site contains “public” services that are available to all users and "protected" services that are only available to registered users.***
 
-The data presented to the users is based on their last 100 games which comes originally from the official api of the game, and after we sort it we displayed the stats for the user who performed the search, in the first time when the user uses the site we extract all the relevant information about him from the official api of the game and store it in our server which create a kind of proxy so that in the next searches of the user the search action will be performed much faster.
+***The data presented to the users is based on their last 100 games which comes originally from the official api of the game, and after we sort it we displayed the stats for the user who performed the search, in the first time when the user uses the site we extract all the relevant information about him from the official api of the game and store it in our server which create a kind of proxy so that in the next searches of the user the search action will be performed much faster.***
 
-In addition we have middlewares that we have created that are responsible to perform within a specificied time period an attempt to update the users data in the database, we take care to update it in our proxy database so that the user has the latest information.**
+***In addition we have middlewares that we have created that are responsible to perform within a specificied time period an attempt to update the users data in the database, we take care to update it in our proxy database so that the user has the latest information.**
 
 ---
 
@@ -43,9 +43,9 @@ In addition we have middlewares that we have created that are responsible to per
 
 ![updateFlow](https://user-images.githubusercontent.com/75484097/161963781-b355a6b7-aa1f-4deb-bedb-855133b52973.png)
 
-***In order the prevent the need of sending request each time a recognized user perform a search for his stats, we using our database as a proxy server for the user data but in order to supply the up to date stats we need to make a update procedure on our database which will occour in a defined time interval.
+***In order the prevent the need of sending request each time a recognized user perform a search for his stats, we using our database as a proxy server for the user data but in order to supply the up to date stats we need to make a update procedure on our database which will occour in a defined time interval.***
 
-In the procedure we will check when the last update performed for the user and if the the specified period has elapsed it will send a request to the official api and will make a comparision between the data that stored in our database to the data that returned from the response and will update the database data in case we found a new data in the response.***
+***In the procedure we will check when the last update performed for the user and if the the specified period has elapsed it will send a request to the official api and will make a comparision between the data that stored in our database to the data that returned from the response and will update the database data in case we found a new data in the response.***
 
 ---
 
