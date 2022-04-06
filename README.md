@@ -1,5 +1,3 @@
-# readme
-
 # WarzoneSquad - Web app, for the game Of Call Of Duty Warzone: 
 
 Offical Site URL : [https://xwarzonesquad.web.app/](https://xwarzonesquad.web.app/)
@@ -31,19 +29,19 @@ In addition we have middlewares that we have created that are responsible to per
 
 ### ***Unrecognized user:***
 
-![newUserFlow.png](readme%20d61cd/newUserFlow.png)
+![newUserFlow](https://user-images.githubusercontent.com/75484097/161963689-b8984cd2-adbf-40aa-89d3-f31722a1d993.png)
 
 ***For a player who has not previously searched for his data on the site we will need to send a request to the official api of the game and from it response we will extract the relevant data to us and save it in our database and after we have done this we will return the stats to the server side that will present them to the user.***
 
 ### Recognized user:
 
-![vetUserFlow.png](readme%20d61cd/vetUserFlow.png)
+![vetUserFlow](https://user-images.githubusercontent.com/75484097/161963727-0e6f1f51-6413-4aaa-bf0a-6c7c7f903411.png)
 
 ***After a user searches for his data in the site, we keep in the database the relevant data of him, therefore in the next time he uses the site we do not need to send request to the official server of the game api, and the data is kept in an orderly manner that suitable for the use on the client side.***
 
 ### ***Update our database:***
 
-![Screen Shot 2022-04-06 at 0.42.39.png](readme%20d61cd/Screen_Shot_2022-04-06_at_0.42.39.png)
+![updateFlow](https://user-images.githubusercontent.com/75484097/161963781-b355a6b7-aa1f-4deb-bedb-855133b52973.png)
 
 ***In order the prevent the need of sending request each time a recognized user perform a search for his stats, we using our database as a proxy server for the user data but in order to supply the up to date stats we need to make a update procedure on our database which will occour in a defined time interval.
 
@@ -53,7 +51,7 @@ In the procedure we will check when the last update performed for the user and i
 
 ## Database models:
 
-![Screen Shot 2022-04-06 at 13.49.39.png](readme%20d61cd/Screen_Shot_2022-04-06_at_13.49.39.png)
+![databaseModels](https://user-images.githubusercontent.com/75484097/161963808-f0926d5c-43c7-48ec-a703-ec8cc51ac2c8.png)
 
 ### User.js - model for registered users of the site:
 
