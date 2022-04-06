@@ -2,6 +2,8 @@
 
 Offical Site URL : [https://xwarzonesquad.web.app/](https://xwarzonesquad.web.app/)
 
+Video Of Using The site : [https://www.youtube.com/watch?v=XBCXhU4JKww&ab_channel=IsrGunner](https://www.youtube.com/watch?v=XBCXhU4JKww&ab_channel=IsrGunner) 
+
 
 ---
 
