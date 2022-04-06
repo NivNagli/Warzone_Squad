@@ -1,6 +1,7 @@
 # WarzoneSquad - Web app, for the game Of Call Of Duty Warzone: 
 
-<a href="https://xwarzonesquad.web.app/" target="_blank">Official Site</a>
+Offical Site URL : [https://xwarzonesquad.web.app/](https://xwarzonesquad.web.app/)
+
 
 ---
 
