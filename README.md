@@ -23,6 +23,7 @@ The site contains “public” services that are available to all users and "pro
 ## ***Technologies used:***
 
 - **NodeJS**
+- **Redis**
 - **React**
 - **Redux**
 - **MongoDB**
