@@ -10,6 +10,10 @@ app.use(bodyParser.json());
 const compression = require('compression');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+
+/* Redis cache connection: */
+require('./middleware/cache');
+
 /* Routes */
 const pullRoutes = require("./routes/pullFromActivision");
 const extractRoutes = require('./routes/extractFromActivision');

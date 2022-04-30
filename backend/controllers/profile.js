@@ -35,7 +35,9 @@ exports.getGameProfile = async (req, res, next) => {
     };
 
     try {
-        const gameProfile = await WarzoneUser.findOne({ username: username, platform: platform });
+        const gameProfile = await WarzoneUser.findOne({ username: username, platform: platform }).cache({
+            key: username.concat('_',platform)
+        });
         if (!gameProfile) {
             description = "Failed to search the profile, make sure you enter the correct details and that the user have public activision account.";  // default message description in case we will not get one from our requests.
             possibleCause = "check the username & platform and the extract controller";
@@ -47,10 +49,10 @@ exports.getGameProfile = async (req, res, next) => {
             const playerStats = await Promise.all(playerDataRequestBarrier);
 
             const userExists = await WarzoneUser.findOne({ username: username, platform: platform });
-            if(userExists) {
+            if (userExists) {
                 /* I made this second check because the create operation take some time
                  * and we don't want to create duplicate profiles so i made this second check. */
-                return res.status(200).json({ lastGamesStats: userExists.lastGamesStats, generalStats: userExists.generalStats, profileID : userExists.id});
+                return res.status(200).json({ lastGamesStats: userExists.lastGamesStats, generalStats: userExists.generalStats, profileID: userExists.id });
             }
 
             const last100GamesStatsArray = playerStats[0].data.data.gamesArray;
@@ -62,21 +64,21 @@ exports.getGameProfile = async (req, res, next) => {
                 platform: platform,
                 lastGamesStats: last100GamesStatsArray,
                 generalStats: lifetimeAndWeeklyStats,
-                lastTimeUpdated : new Date().getTime()
+                lastTimeUpdated: new Date().getTime()
             });
             await newGameProfile.save();
             console.log("New game profile object created in the database");
-            res.status(200).json({ lastGamesStats: last100GamesStatsArray, generalStats: lifetimeAndWeeklyStats, profileID : newGameProfile.id});
+            res.status(200).json({ lastGamesStats: last100GamesStatsArray, generalStats: lifetimeAndWeeklyStats, profileID: newGameProfile.id });
         }
         else {
-            res.status(200).json({ lastGamesStats: gameProfile.lastGamesStats, generalStats: gameProfile.generalStats, profileID : gameProfile.id});
+            res.status(200).json({ lastGamesStats: gameProfile.lastGamesStats, generalStats: gameProfile.generalStats, profileID: gameProfile.id });
         }
     }
     catch (err) {
         try {
             possibleCause = err.response.data.possibleCause;
         }
-        catch (err) {} // Dont care if dont have a cause, we will use ours cause from this method.
+        catch (err) { } // Dont care if dont have a cause, we will use ours cause from this method.
         console.log("getUser controller method failed!");
         console.log(err.response.data.possibleCause);
         try {
@@ -92,24 +94,24 @@ exports.getGameProfile = async (req, res, next) => {
 
 exports.getGameProfileById = async (req, res, next) => {
     /* This method will get a profile id as he appear in the database and will return for that profile if it exists */
-    const {profileId} = req.body;
-    if(!profileId) {
+    const { profileId } = req.body;
+    if (!profileId) {
         const error = new HttpError('Invalid inputs passed, please check your data.', 422);
         return next(error);
     };
 
     let existingProfile;
     try {
-        existingProfile = await  WarzoneUser.findById(profileId);
+        existingProfile = await WarzoneUser.findById(profileId);
     }
     catch (err) {
         console.log(err);
         const error = new HttpError("Profile search failed, Please try again.", 500);
         return next(error);
     }
-    if(!existingProfile) {
+    if (!existingProfile) {
         const error = new HttpError("Invalid profile ID", 403);
         return next(error);
     }
-    res.status(200).json({ lastGamesStats: existingProfile.lastGamesStats, generalStats: existingProfile.generalStats, profileID : existingProfile.id});
+    res.status(200).json({ lastGamesStats: existingProfile.lastGamesStats, generalStats: existingProfile.generalStats, profileID: existingProfile.id });
 };
