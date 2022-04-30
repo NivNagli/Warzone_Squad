@@ -79,9 +79,10 @@ mongoose.Query.prototype.exec = async function () {
     // Otherwise, issue the query and store the result in redis
     const result = await exec.apply(this, arguments);
     if (result) {
+        const cacheExpiration = 60*60*5;
         console.log("saving new data to the redis cache");
         await client.set(key, JSON.stringify(result), {
-            EX: 60*60*5,
+            EX: cacheExpiration,
         });
     }
     return result;
