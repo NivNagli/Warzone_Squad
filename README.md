@@ -1,5 +1,5 @@
 # WarzoneSquad - Web app, for the game Of Call Of Duty Warzone: 
-***The service has been suspended until next month due to overuse of Amazon's hosted servers!***
+
 
 Offical Site URL : [https://xwarzonesquad.web.app/](https://xwarzonesquad.web.app/)
 
