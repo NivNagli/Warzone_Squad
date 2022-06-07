@@ -52,7 +52,7 @@ Now the next time a user searches for his information we will identify on the se
 
 ***Unrecognized user:***
 
-For a player who has not previously searched for his data on the site we will need to send a request to the official api of the game and from it response we will extract the relevant data to us and save it in our database and after we have done this we will return the stats to the server side that will present them to the user.
+For a player who has not previously searched for his data on the site we will need to send a request to the official api of the game and from it response we will extract the relevant data to us and save it in our database and after we have done this we will return the stats to the client side that will present them to the user.
 
 ![newUserFlow](https://user-images.githubusercontent.com/75484097/172427056-da9cc0c7-c6dd-46e2-86d5-36190fc20130.png)
 
