@@ -5,7 +5,8 @@ Offical Site URL : [https://xwarzonesquad.web.app/](https://xwarzonesquad.web.ap
 
 ## ***Technologies used && Services***:
 
-![siteMap.png](readme%20(1)%20d20e353290fd41de9eae857a44884014/siteMap.png)
+![siteMap](https://user-images.githubusercontent.com/75484097/172426860-fe8a76bd-377c-4533-be51-cbb5195b116e.png)
+
 
 ***Technologies used:***
 
@@ -36,7 +37,8 @@ The reason I chose this design pattern is because activision's official api requ
 
 The services who are responsible for implementing this pattern are pullFromActivision.js whose job is to perform the direct communication with the official API, and extractFromActivision.js whose job it is to filter the relevant information from the response which is returned to him from pullFromActivision service, and in case of error to define the error message.
 
-![Adapter.png](readme%20(1)%20d20e353290fd41de9eae857a44884014/Adapter.png)
+![Adapter](https://user-images.githubusercontent.com/75484097/172426942-781165cf-d418-4cef-bdd6-dcd2dcc7110f.png)
+
 
 ### The Proxy Pattern:
 
@@ -50,13 +52,14 @@ Now the next time a user searches for his information we will identify on the se
 
 For a player who has not previously searched for his data on the site we will need to send a request to the official api of the game and from it response we will extract the relevant data to us and save it in our database and after we have done this we will return the stats to the server side that will present them to the user.
 
-![newUserFlow.png](readme%20(1)%20d20e353290fd41de9eae857a44884014/newUserFlow.png)
+![newUserFlow](https://user-images.githubusercontent.com/75484097/172427056-da9cc0c7-c6dd-46e2-86d5-36190fc20130.png)
 
 ***Recognized user:***
 
 After a user searches for his data in the site, we keep in the database the relevant data of him, therefore in the next time he uses the site we do not need to send request to the official server of the game api, and the data is kept in an orderly manner that suitable for the use on the client side.
 
-![vetUserFlow.png](readme%20(1)%20d20e353290fd41de9eae857a44884014/vetUserFlow.png)
+![vetUserFlow](https://user-images.githubusercontent.com/75484097/172427238-2a3a36f2-406d-43f5-8545-560d6808b11a.png)
+
 
 ### Now how the data in our proxy server will be up to date?
 
@@ -70,7 +73,8 @@ The update attempt will only be performed for users whose the pre-defined period
 
 In order to schedule the services that responsible for the update operation in different sub-processes I used the cron library.
 
-![Screen Shot 2022-04-06 at 0.42.39.png](readme%20(1)%20d20e353290fd41de9eae857a44884014/Screen_Shot_2022-04-06_at_0.42.39.png)
+![updateFlow](https://user-images.githubusercontent.com/75484097/172427498-67efbf8c-c404-4875-93bd-1142f3cf032a.png)
+
 
 ### The caching system:
 
@@ -82,13 +86,14 @@ after the ‘cache’ function implemention i edit the implementation of the 'ex
 
 ### General flow chart of retrieving the data from the backend:
 
-![GeneralUml.png](readme%20(1)%20d20e353290fd41de9eae857a44884014/GeneralUml.png)
+![GeneralUml](https://user-images.githubusercontent.com/75484097/172427647-35878874-49e6-40bc-8930-f14911c7e821.png)
 
 ---
 
 ## Database models:
 
-![Screen Shot 2022-04-06 at 13.49.39.png](readme%20(1)%20d20e353290fd41de9eae857a44884014/Screen_Shot_2022-04-06_at_13.49.39.png)
+![databaseModels](https://user-images.githubusercontent.com/75484097/172427693-f603ef54-3390-41b2-81db-5e266f83d028.png)
+
 
 ### User.js - model for registered users of the site:
 
@@ -119,4 +124,4 @@ This model created when a user preform a search for specific match, becuase this
 
 ### General structure of the code:
 
-![Backend.png](readme%20(1)%20d20e353290fd41de9eae857a44884014/Backend.png)
+![Backend](https://user-images.githubusercontent.com/75484097/172427774-8592071e-c864-4918-b1cc-582629cd8e30.png)
