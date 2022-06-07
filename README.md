@@ -1,5 +1,3 @@
-# readme (1)
-
 # WarzoneSquad - Web app
 Offical Site URL : [https://xwarzonesquad.web.app/](https://xwarzonesquad.web.app/)
 
